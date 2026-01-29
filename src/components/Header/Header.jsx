@@ -26,7 +26,6 @@ const Header = () => {
     );
 
     return (
-        // <Container>
         <Box width={'100'} bgcolor={'red'} display={'flex'} justifyContent={'space-between'}>
             <p>Header here</p>
             <Button onClick={toggleDrawer(true)}>Open here</Button>
@@ -34,7 +33,7 @@ const Header = () => {
                 {DrawerList}
             </Drawer>
         </Box>
-        // </Container>
+
     )
 }
 
