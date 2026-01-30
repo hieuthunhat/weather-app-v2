@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Card} from "@mui/material";
+import {Card, Typography} from "@mui/material";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
 import {buildForecastURL} from "../../helpers/helpers.js";
-import {FORECAST_URL} from "../../consts/settingConstants.js";
+import {CELSIUS, FAHRENHEIT, FORECAST_URL} from "../../consts/settingConstants.js";
 
 function CurrentWeatherCard() {
     const {location: selectedLocation, selectedFields} = useContext(SettingContext);
@@ -37,11 +37,13 @@ function CurrentWeatherCard() {
         fetchCurrentWeather();
     }, [selectedLocation])
 
+    const unitBuilder = selectedFields.temperature_unit.length > 0 ? CELSIUS : FAHRENHEIT
+
     // Current: location, temp,
     return (
         <Card>
-            {selectedLocation.name}
-            {selectedLocation.locationName}
+            <Typography fontWeight={'bold'} fontSize={'xx-large'}>{selectedLocation.name}</Typography>
+            <Typography>{selectedLocation.locationName}</Typography>
         </Card>
     );
 }

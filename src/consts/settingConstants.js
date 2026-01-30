@@ -9,3 +9,6 @@ export const RELATIVE_HUMIDITY = 'relative_humidity_2m';
 export const WIND_SPEED = 'wind_speed_2m';
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
+
+export const CELSIUS = 'C';
+export const FAHRENHEIT = 'F';
