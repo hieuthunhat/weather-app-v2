@@ -8,5 +8,5 @@ export const buildForecastURL = ({url, obj, latitude, longitude}) => {
         .map(([key, value]) => `${key}=${value.join(',')}`)
         .join('&');
 
-    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}`;
+    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime`;
 };

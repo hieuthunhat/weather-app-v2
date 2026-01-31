@@ -9,12 +9,13 @@ import {
 } from '@mui/material';
 import {SettingContext} from '../../contexts/SettingContext.jsx';
 
-function SuggestListBox({suggestions = []}) {
+function SuggestListBox({suggestions = [], setSuggestions}) {
     const {setLocation} = useContext(SettingContext);
 
     const handleClickLocation = (value) => {
         setLocation(value);
         setIsShow(false);
+        setSuggestions([]);
     };
 
     const [isShow, setIsShow] = useState(suggestions.length > 0);

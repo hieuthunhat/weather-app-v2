@@ -61,7 +61,7 @@ const SearchBox = () => {
                 onChange={handleQueryChange}
                 disabled={loading}
             />
-            {query.length > 0 && suggestions.length > 0 && (<SuggestListBox suggestions={suggestions}/>)}
+            {query.length > 0 && suggestions.length > 0 && (<SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions} />)}
         </Box>
     );
 };
