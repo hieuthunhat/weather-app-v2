@@ -1,29 +1,35 @@
 import {
   WiDaySunny,
   WiNightClear,
-
   WiDayCloudy,
   WiNightAltCloudy,
-
   WiCloudy,
   WiFog,
-
   WiSprinkle,
   WiDayRain,
   WiNightAltRain,
-
   WiSnowflakeCold,
   WiSnow,
   WiSnowWind,
-
   WiShowers,
-
   WiThunderstorm,
   WiDayThunderstorm,
   WiNightAltThunderstorm,
-
-  WiHail
+  WiHail,
+  WiStrongWind,
+  WiHumidity,
+  WiRaindrop,
 } from "react-icons/wi";
+import { FaTemperatureHigh, FaTemperatureLow } from "react-icons/fa6";
+import {
+  LuWind,
+  LuDroplets,
+  LuCloudRain,
+  LuCloudSnow,
+  LuThermometer,
+  LuThermometerSnowflake,
+} from "react-icons/lu";
+
 
 export function getWeatherIcon(weatherCode, isDay) {
   const day = isDay === 1;
@@ -100,4 +106,21 @@ export function getWeatherIcon(weatherCode, isDay) {
     default:
       return WiCloudy;
   }
+}
+
+export const UNIT_ICONS = {
+  WIND_SPEED: LuWind,
+  RELATIVE_HUMIDITY: LuDroplets,
+  PRECIPITATION: LuCloudRain,
+  SHOWERS: LuCloudRain,
+  SNOWFALL: LuCloudSnow,
+  FEELS_LIKE_TEMPERATURE: LuThermometer,
+};
+
+export function getUnitIcon(unitKey, value) {
+  if (unitKey === "FEELS_LIKE_TEMPERATURE") {
+    return value <= 10 ? LuThermometerSnowflake : LuThermometer;
+  }
+
+  return UNIT_ICONS[unitKey] || null;
 }

@@ -1,19 +1,29 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Card, Stack, Typography } from '@mui/material'
 import React from 'react'
+import { getUnitIcon } from '../../consts/iconMaps';
 
-const UnitCard = ({label, unit, dataNumber, isShow = true, icon}) => {
+function UnitCard({ label, dataNumber, unit, unitKey }) {
+  const Icon = getUnitIcon(unitKey, dataNumber);
+
   return (
-    isShow &&
-    <Box bgcolor={'AccentColorText'}>
-        <Stack direction={{ xs: 'column', sm: 'row' }}>
-            {icon}
+    <Box width={'9rem'} height={'3rem'}>
+      <Card>
+        <Box padding={'0.5rem'} bgcolor={'gray'}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {Icon && <Icon size={28} color="#4FC3F7" />}
             <Box>
-                <Typography>{label}</Typography>
-                <Typography>{dataNumber} {unit}</Typography>
+              <Typography variant="body2">{label}</Typography>
+              <Typography fontWeight="bold">
+                {dataNumber ? dataNumber : "N/A"} {unit}
+              </Typography>
             </Box>
-        </Stack>
+          </Stack>
+        </Box>
+      </Card>
     </Box>
-  )
+  );
 }
+
+
 
 export default UnitCard
