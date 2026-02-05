@@ -1,9 +1,23 @@
-import {Box, TextField} from '@mui/material';
-import React, {useEffect, useState} from 'react';
+import {
+    Box,
+    Button, Divider, Drawer,
+    Icon,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Stack,
+    TextField
+} from '@mui/material';
+import React, {useContext, useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
+import {TiThMenu} from "react-icons/ti";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
 
 const SearchBox = () => {
+    const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -50,18 +64,48 @@ const SearchBox = () => {
         setQuery(e.target.value);
     };
 
+
+    const toggleDrawer = (value) => () => setIsOpenDrawer(value)
+    const DrawerList = (
+        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+            <List>
+                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    <ListItem key={text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                            </ListItemIcon>
+                            <ListItemText primary={text}/>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider/>
+            <Button>Light theme</Button>
+        </Box>
+    );
+
     return (
         <Box padding="1rem">
-            <TextField
-                label="Search location"
-                variant="outlined"
-                fullWidth
-                placeholder="Ex: Hanoi, Vietnam..."
-                value={query}
-                onChange={handleQueryChange}
-                disabled={loading}
-            />
-            {query.length > 0 && suggestions.length > 0 && (<SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions} />)}
+            <Stack direction="row" spacing={2} alignItems={'center'}>
+                <Button onClick={toggleDrawer(true)}><TiThMenu/></Button>
+                <TextField
+                    label="Search location"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Ex: Hanoi, Vietnam..."
+                    value={query}
+                    onChange={handleQueryChange}
+                    disabled={loading}
+                    size={'small'}
+                />
+                <Button>Use my location</Button>
+            </Stack>
+            {query.length > 0 && suggestions.length > 0 && (
+                <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
+            <Drawer open={isOpenDrawer} onClose={toggleDrawer(false)}>
+                {DrawerList}
+            </Drawer>
         </Box>
     );
 };

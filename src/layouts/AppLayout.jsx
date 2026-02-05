@@ -14,7 +14,7 @@ const AppLayout = () => {
     return (
         <Box>
             <SettingProvider>
-                <Header />
+                {/*<Header />*/}
                 <BodyLayout />
             </SettingProvider>
         </Box>

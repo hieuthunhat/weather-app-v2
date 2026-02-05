@@ -28,6 +28,8 @@ import {
   LuCloudSnow,
   LuThermometer,
   LuThermometerSnowflake,
+  LuCompass,
+  LuCloud,
 } from "react-icons/lu";
 
 
@@ -115,6 +117,9 @@ export const UNIT_ICONS = {
   SHOWERS: LuCloudRain,
   SNOWFALL: LuCloudSnow,
   FEELS_LIKE_TEMPERATURE: LuThermometer,
+  CLOUD_COVER: LuCloud,
+  WIND_DIRECTION: LuCompass,
+  WIND_GUSTS: WiStrongWind,
 };
 
 export function getUnitIcon(unitKey, value) {

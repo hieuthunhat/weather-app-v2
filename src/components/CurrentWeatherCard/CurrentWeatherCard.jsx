@@ -9,6 +9,7 @@ import './CurrentWeatherCard.scss'
 import { getWeatherText } from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
 import { BsThreeDots } from "react-icons/bs";
+import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
 
 function CurrentWeatherCard() {
     const { location: selectedLocation, selectedFields, data, setData } = useContext(SettingContext);
@@ -54,7 +55,6 @@ function CurrentWeatherCard() {
 
     }
 
-
     return (
         <Card>
             {loading ?
@@ -62,16 +62,17 @@ function CurrentWeatherCard() {
                 :
                 data &&
                 <Container>
-                    <Stack alignItems={'flex-end'} padding={'0.5rem'}>
-                        <Button onClick={() => console.log('open pin panel')
-                        }><BsThreeDots /></Button>
+                    <Stack justifyContent={'space-between'} flexDirection={'row'} padding={'0.5rem'}>
+                        <Box>
+                            <Typography fontWeight={'bold'} fontSize={'xx-large'}>{selectedLocation.name}</Typography>
+                            <Typography>{selectedLocation.locationName}</Typography>
+                        </Box>
+                        <ThreeDotsButton />
                     </Stack>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={'space-between'} padding={'1rem'} alignItems={'center'}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={'space-between'} padding={'1rem'} alignItems={'center'} gap={'1.5rem'}>
                         {/* Current weather */}
-                        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'100%'}>
+                        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'70%'}>
                             <Stack alignItems={'flex-start'}>
-                                <Typography fontWeight={'bold'} fontSize={'xx-large'}>{selectedLocation.name}</Typography>
-                                <Typography>{selectedLocation.locationName}</Typography>
                                 <Stack direction="row" spacing={2}>
                                     <WeatherIcon
                                         weatherCode={data.current?.weather_code}
@@ -79,12 +80,10 @@ function CurrentWeatherCard() {
                                         size={100}
                                     />
                                     <Box>
-                                        <Typography fontSize={'3rem'}>{data.current?.temperature_2m} {data.current_units?.temperature_2m}</Typography>
+                                        <Typography fontSize={'2rem'}>{data.current?.temperature_2m} {data.current_units?.temperature_2m}</Typography>
                                         <Typography variant="body2">
                                             {getWeatherText(data.current?.weather_code)}
                                         </Typography>
-                                        {/* 
-                                    <Typography>Humidity: {data.current?.relative_humidity_2m} {data.current_units?.relative_humidity_2m}</Typography> */}
                                     </Box>
                                 </Stack>
                             </Stack>
@@ -102,7 +101,7 @@ function CurrentWeatherCard() {
                                 />
 
                                 <UnitCard
-                                    label="Wind"
+                                    label="Wind speed"
                                     dataNumber={data.current?.wind_speed_10m}
                                     unit={data.current_units?.wind_speed_10m}
                                     unitKey="WIND_SPEED"
@@ -115,22 +114,22 @@ function CurrentWeatherCard() {
                                     unitKey="RELATIVE_HUMIDITY"
                                 />
                                 <UnitCard
-                                    label="Humidity"
-                                    dataNumber={data.current?.relative_humidity_2m}
-                                    unit={data.current_units?.relative_humidity_2m}
-                                    unitKey="RELATIVE_HUMIDITY"
+                                    label="Cloud cover"
+                                    dataNumber={data.current?.cloud_cover}
+                                    unit={data.current_units?.cloud_cover}
+                                    unitKey="CLOUD_COVER"
                                 />
                                 <UnitCard
-                                    label="Humidity"
-                                    dataNumber={data.current?.relative_humidity_2m}
-                                    unit={data.current_units?.relative_humidity_2m}
-                                    unitKey="RELATIVE_HUMIDITY"
+                                    label="Wind direction"
+                                    dataNumber={data.current?.wind_direction_10m}
+                                    unit={data.current_units?.wind_direction_10m}
+                                    unitKey="WIND_DIRECTION"
                                 />
                                 <UnitCard
-                                    label="Humidity"
-                                    dataNumber={data.current?.relative_humidity_2m}
-                                    unit={data.current_units?.relative_humidity_2m}
-                                    unitKey="RELATIVE_HUMIDITY"
+                                    label="Wind gusts"
+                                    dataNumber={data.current?.wind_gusts_10m}
+                                    unit={data.current_units?.wind_gusts_10m}
+                                    unitKey="WIND_GUSTS"
                                 />
                             </Stack>
                         </Box>

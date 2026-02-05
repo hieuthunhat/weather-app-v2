@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import {Box, Container, Stack} from '@mui/material'
 import React, { useContext } from 'react'
 import SearchBox from '../components/SearchBox/SearchBox'
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
@@ -9,12 +9,14 @@ const BodyLayout = () => {
   const { location  } = useContext(SettingContext);
   return (
     <Container>
-      <SearchBox />
-      {location  ?
-        <CurrentWeatherCard />
-        :
-        <EmptyState />
-      }
+        <Stack justifyContent={'center'}>
+            <SearchBox/>
+            {location ?
+                <CurrentWeatherCard/>
+                :
+                <EmptyState/>
+            }
+        </Stack>
     </Container>
   )
 }
