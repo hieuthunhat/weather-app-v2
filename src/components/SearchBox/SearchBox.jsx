@@ -8,13 +8,14 @@ import {
     ListItemIcon,
     ListItemText,
     Stack,
-    TextField
+    TextField, Typography
 } from '@mui/material';
 import React, {useContext, useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
 import {TiThMenu} from "react-icons/ti";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
+import { CiLocationOn } from "react-icons/ci";
 
 const SearchBox = () => {
     const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
@@ -68,6 +69,10 @@ const SearchBox = () => {
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
     const DrawerList = (
         <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+            <Box padding={2}>
+                <Typography component="h1" variant="h5">Weather App</Typography>
+            </Box>
+            <Divider/>
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -99,7 +104,7 @@ const SearchBox = () => {
                     disabled={loading}
                     size={'small'}
                 />
-                <Button>Use my location</Button>
+                <Button><CiLocationOn size={40} /></Button>
             </Stack>
             {query.length > 0 && suggestions.length > 0 && (
                 <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}

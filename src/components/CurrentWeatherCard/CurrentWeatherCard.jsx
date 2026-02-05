@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Box, Card, Typography, Stack, Container, Icon, Button } from "@mui/material";
-import { SettingContext } from "../../contexts/SettingContext.jsx";
-import { buildForecastURL } from "../../helpers/helpers.js";
-import { FORECAST_URL } from "../../consts/settingConstants.js";
+import React, {useContext, useEffect, useState} from 'react';
+import {Box, Card, Typography, Stack, Container, Icon, Button} from "@mui/material";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
+import {buildForecastURL} from "../../helpers/helpers.js";
+import {FORECAST_URL} from "../../consts/settingConstants.js";
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
-import { getWeatherIcon } from '../../consts/iconMaps.js';
+import {getWeatherIcon} from '../../consts/iconMaps.js';
 import './CurrentWeatherCard.scss'
-import { getWeatherText } from '../../consts/weatherHelpTexts.js';
+import {getWeatherText} from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
-import { BsThreeDots } from "react-icons/bs";
+import {BsThreeDots} from "react-icons/bs";
 import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
 
 function CurrentWeatherCard() {
-    const { location: selectedLocation, selectedFields, data, setData } = useContext(SettingContext);
+    const {location: selectedLocation, selectedFields, data, setData} = useContext(SettingContext);
     const [loading, setLoading] = useState(false)
     const fetchCurrentWeather = async () => {
         setLoading(true)
@@ -42,7 +42,7 @@ function CurrentWeatherCard() {
         fetchCurrentWeather();
     }, [selectedLocation])
 
-    function WeatherIcon({ weatherCode, is_day, size = 48 }) {
+    function WeatherIcon({weatherCode, is_day, size = 48}) {
         const Icon = getWeatherIcon(weatherCode, is_day);
         const color = getWeatherColor(weatherCode, is_day);
         return (
@@ -56,20 +56,20 @@ function CurrentWeatherCard() {
     }
 
     return (
-        <Card>
-            {loading ?
-                <LoadingSpinner />
-                :
-                data &&
+        loading ?
+            <LoadingSpinner/>
+            : <Card>
                 <Container>
                     <Stack justifyContent={'space-between'} flexDirection={'row'} padding={'0.5rem'}>
                         <Box>
-                            <Typography fontWeight={'bold'} fontSize={'xx-large'}>{selectedLocation.name}</Typography>
+                            <Typography fontWeight={'bold'}
+                                        fontSize={'xx-large'}>{selectedLocation.name}</Typography>
                             <Typography>{selectedLocation.locationName}</Typography>
                         </Box>
-                        <ThreeDotsButton />
+                        <ThreeDotsButton/>
                     </Stack>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={'space-between'} padding={'1rem'} alignItems={'center'} gap={'1.5rem'}>
+                    <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} padding={'1rem'}
+                           alignItems={'center'} gap={'1.5rem'}>
                         {/* Current weather */}
                         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'70%'}>
                             <Stack alignItems={'flex-start'}>
@@ -80,7 +80,8 @@ function CurrentWeatherCard() {
                                         size={100}
                                     />
                                     <Box>
-                                        <Typography fontSize={'2rem'}>{data.current?.temperature_2m} {data.current_units?.temperature_2m}</Typography>
+                                        <Typography
+                                            fontSize={'2rem'}>{data.current?.temperature_2m} {data.current_units?.temperature_2m}</Typography>
                                         <Typography variant="body2">
                                             {getWeatherText(data.current?.weather_code)}
                                         </Typography>
@@ -91,7 +92,8 @@ function CurrentWeatherCard() {
 
                         {/* Elements */}
                         <Box width={'100%'}>
-                            <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'center'}>
+                            <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}
+                                   justifyContent={'center'} alignItems={'center'}>
 
                                 <UnitCard
                                     label="Feels like"
@@ -135,8 +137,8 @@ function CurrentWeatherCard() {
                         </Box>
                     </Stack>
                 </Container>
-            }
-        </Card>
+            </Card>
+
     );
 }
 
@@ -167,7 +169,6 @@ function getWeatherColor(weatherCode, isDay) {
 
     return "#90A4AE";
 }
-
 
 
 export default CurrentWeatherCard;
