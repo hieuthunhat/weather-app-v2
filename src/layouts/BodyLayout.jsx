@@ -4,20 +4,22 @@ import SearchBox from '../components/SearchBox/SearchBox'
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
 import { SettingContext } from '../contexts/SettingContext.jsx';
 import EmptyState from '../components/EmptyState/EmptyState.jsx';
+import HourlyWeatherCard from '../components/HourlyWeatherCard/HourlyWeatherCard.jsx';
 
 const BodyLayout = () => {
-  const { location  } = useContext(SettingContext);
+  const { location, data  } = useContext(SettingContext);
   return (
-    <Container>
-        <Stack justifyContent={'center'}>
+    // <Container>
+        <Stack justifyContent={'center'} gap={2}>
             <SearchBox/>
             {location ?
                 <CurrentWeatherCard/>
                 :
                 <EmptyState/>
             }
+            {data && <HourlyWeatherCard data={data} />}
         </Stack>
-    </Container>
+    // </Container>
   )
 }
 

@@ -12,12 +12,12 @@ import { SettingProvider } from '../contexts/SettingContext'
  */
 const AppLayout = () => {
     return (
-        <Box>
+        <Container>
             <SettingProvider>
                 {/*<Header />*/}
                 <BodyLayout />
             </SettingProvider>
-        </Box>
+        </Container>
     )
 }
 
