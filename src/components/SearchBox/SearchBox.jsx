@@ -93,7 +93,7 @@ const SearchBox = () => {
     return (
         <Box padding="1rem">
             <Stack direction="row" spacing={2} alignItems={'center'}>
-                <Button onClick={toggleDrawer(true)}><TiThMenu/></Button>
+                <Button onClick={toggleDrawer(true)}><TiThMenu size={30} /></Button>
                 <TextField
                     label="Search location"
                     variant="outlined"
@@ -104,7 +104,7 @@ const SearchBox = () => {
                     disabled={loading}
                     size={'small'}
                 />
-                <Button><CiLocationOn size={40} /></Button>
+                <Button><CiLocationOn size={30} /></Button>
             </Stack>
             {query.length > 0 && suggestions.length > 0 && (
                 <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}

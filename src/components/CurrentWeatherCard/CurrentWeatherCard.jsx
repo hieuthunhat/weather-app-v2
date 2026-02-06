@@ -1,18 +1,21 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Box, Card, Typography, Stack, Container, Icon, Button} from "@mui/material";
-import {SettingContext} from "../../contexts/SettingContext.jsx";
-import {buildForecastURL} from "../../helpers/helpers.js";
-import {FORECAST_URL} from "../../consts/settingConstants.js";
+import React, { useContext, useEffect, useState } from 'react';
+import { Box, Card, Typography, Stack, Container, Icon, Button } from "@mui/material";
+import { SettingContext } from "../../contexts/SettingContext.jsx";
+import { buildForecastURL } from "../../helpers/helpers.js";
+import { FORECAST_URL } from "../../consts/settingConstants.js";
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
-import {getWeatherIcon} from '../../consts/iconMaps.js';
+import { getWeatherIcon } from '../../consts/iconMaps.js';
 import './CurrentWeatherCard.scss'
-import {getWeatherText} from '../../consts/weatherHelpTexts.js';
+import { getWeatherText } from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
-import {BsThreeDots} from "react-icons/bs";
 import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
 
+/**
+ * 
+ * @returns 
+ */
 function CurrentWeatherCard() {
-    const {location: selectedLocation, selectedFields, data, setData} = useContext(SettingContext);
+    const { location: selectedLocation, selectedFields, data, setData } = useContext(SettingContext);
     const [loading, setLoading] = useState(false)
     const fetchCurrentWeather = async () => {
         setLoading(true)
@@ -42,7 +45,7 @@ function CurrentWeatherCard() {
         fetchCurrentWeather();
     }, [selectedLocation])
 
-    function WeatherIcon({weatherCode, is_day, size = 48}) {
+    function WeatherIcon({ weatherCode, is_day, size = 48 }) {
         const Icon = getWeatherIcon(weatherCode, is_day);
         const color = getWeatherColor(weatherCode, is_day);
         return (
@@ -57,33 +60,37 @@ function CurrentWeatherCard() {
 
     return (
         loading ?
-            <LoadingSpinner/>
-            : <Card>
-                <Container>
-                    <Stack justifyContent={'space-between'} flexDirection={'row'} padding={'0.5rem'}>
-                        <Box>
-                            <Typography fontWeight={'bold'}
-                                        fontSize={'xx-large'}>{selectedLocation.name}</Typography>
-                            <Typography>{selectedLocation.locationName}</Typography>
-                        </Box>
-                        <ThreeDotsButton/>
+            <LoadingSpinner />
+            :
+            <Card>
+                <Box padding={1}>
+                    <Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>
+                        <ThreeDotsButton />
                     </Stack>
-                    <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} padding={'1rem'}
-                           alignItems={'center'} gap={'1.5rem'}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={'space-between'} paddingBlockEnd={'1rem'}
+                        alignItems={'center'} gap={'1.5rem'}>
                         {/* Current weather */}
                         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'70%'}>
                             <Stack alignItems={'flex-start'}>
-                                <Stack direction="row" spacing={2}>
+                                <Box>
+                                    <Typography fontWeight={'bold'}
+                                        fontSize={'xx-large'}>{selectedLocation.name}
+                                    </Typography>
+                                    <Typography>{selectedLocation.locationName}</Typography>
+                                </Box>
+                                <Stack direction="row" flexWrap={'wrap'} spacing={2} justifyContent={'center'}>
                                     <WeatherIcon
-                                        weatherCode={data.current?.weather_code}
-                                        is_day={data.current?.is_day}
+                                        weatherCode={data?.current?.weather_code}
+                                        is_day={data?.current?.is_day}
                                         size={100}
                                     />
                                     <Box>
                                         <Typography
-                                            fontSize={'2rem'}>{data.current?.temperature_2m} {data.current_units?.temperature_2m}</Typography>
+                                            fontSize={'xxx-large'} noWrap>
+                                            {data?.current?.temperature_2m} {data?.current_units?.temperature_2m}
+                                        </Typography>
                                         <Typography variant="body2">
-                                            {getWeatherText(data.current?.weather_code)}
+                                            {getWeatherText(data?.current?.weather_code)}
                                         </Typography>
                                     </Box>
                                 </Stack>
@@ -93,50 +100,50 @@ function CurrentWeatherCard() {
                         {/* Elements */}
                         <Box width={'100%'}>
                             <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}
-                                   justifyContent={'center'} alignItems={'center'}>
+                                justifyContent={'center'} alignItems={'center'}>
 
                                 <UnitCard
                                     label="Feels like"
-                                    dataNumber={data.current?.apparent_temperature}
-                                    unit={data.current_units?.temperature_2m}
+                                    dataNumber={data?.current?.apparent_temperature}
+                                    unit={data?.current_units?.temperature_2m}
                                     unitKey="FEELS_LIKE_TEMPERATURE"
                                 />
 
                                 <UnitCard
                                     label="Wind speed"
-                                    dataNumber={data.current?.wind_speed_10m}
-                                    unit={data.current_units?.wind_speed_10m}
+                                    dataNumber={data?.current?.wind_speed_10m}
+                                    unit={data?.current_units?.wind_speed_10m}
                                     unitKey="WIND_SPEED"
                                 />
 
                                 <UnitCard
                                     label="Humidity"
-                                    dataNumber={data.current?.relative_humidity_2m}
-                                    unit={data.current_units?.relative_humidity_2m}
+                                    dataNumber={data?.current?.relative_humidity_2m}
+                                    unit={data?.current_units?.relative_humidity_2m}
                                     unitKey="RELATIVE_HUMIDITY"
                                 />
                                 <UnitCard
                                     label="Cloud cover"
-                                    dataNumber={data.current?.cloud_cover}
-                                    unit={data.current_units?.cloud_cover}
+                                    dataNumber={data?.current?.cloud_cover}
+                                    unit={data?.current_units?.cloud_cover}
                                     unitKey="CLOUD_COVER"
                                 />
                                 <UnitCard
                                     label="Wind direction"
-                                    dataNumber={data.current?.wind_direction_10m}
-                                    unit={data.current_units?.wind_direction_10m}
+                                    dataNumber={data?.current?.wind_direction_10m}
+                                    unit={data?.current_units?.wind_direction_10m}
                                     unitKey="WIND_DIRECTION"
                                 />
                                 <UnitCard
                                     label="Wind gusts"
-                                    dataNumber={data.current?.wind_gusts_10m}
-                                    unit={data.current_units?.wind_gusts_10m}
+                                    dataNumber={data?.current?.wind_gusts_10m}
+                                    unit={data?.current_units?.wind_gusts_10m}
                                     unitKey="WIND_GUSTS"
                                 />
                             </Stack>
                         </Box>
                     </Stack>
-                </Container>
+                </Box>
             </Card>
 
     );

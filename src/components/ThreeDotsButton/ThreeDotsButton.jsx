@@ -16,8 +16,8 @@ function ThreeDotsButton({actions}) {
 
     return (
         <Box>
-            <Button variant={'outlined'} onClick={handleClick}>
-                <BsThreeDots/></Button>
+            <Button onClick={handleClick}>
+                <BsThreeDots size={20} /></Button>
             <Popover
                 open={open}
                 anchorEl={anchorEl}
