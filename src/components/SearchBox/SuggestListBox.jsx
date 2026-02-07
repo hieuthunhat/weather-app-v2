@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {
     Box,
     Divider,
@@ -14,15 +14,25 @@ function SuggestListBox({suggestions = [], setSuggestions}) {
 
     const handleClickLocation = (value) => {
         setLocation(value);
-        setIsShow(false);
         setSuggestions([]);
     };
 
-    const [isShow, setIsShow] = useState(suggestions.length > 0);
-
     return (
-        isShow &&
-        <Box role="presentation">
+        <Box 
+            role="presentation"
+            sx={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                backgroundColor: 'background.paper',
+                boxShadow: 3,
+                borderRadius: 1,
+                zIndex: 1000,
+                maxHeight: '400px',
+                overflowY: 'auto'
+            }}
+        >
             <List>
                 {suggestions.map(
                     (

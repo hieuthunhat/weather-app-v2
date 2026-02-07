@@ -93,7 +93,7 @@ const SearchBox = () => {
     );
 
     return (
-        <Box padding="1rem">
+        <Box paddingTop={2} sx={{ position: 'relative' }}>
             <Stack direction="row" spacing={2} alignItems={'center'}>
                 <Button onClick={toggleDrawer(true)}><TiThMenu size={30} /></Button>
                 <TextField
