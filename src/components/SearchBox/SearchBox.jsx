@@ -16,6 +16,7 @@ import SuggestListBox from "./SuggestListBox.jsx";
 import {TiThMenu} from "react-icons/ti";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
 import { CiLocationOn } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom';
 
 const SearchBox = () => {
     const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
@@ -67,6 +68,7 @@ const SearchBox = () => {
 
 
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
+    const navigate = useNavigate();
     const DrawerList = (
         <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
             <Box padding={2}>
@@ -74,13 +76,13 @@ const SearchBox = () => {
             </Box>
             <Divider/>
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Analysis', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                             </ListItemIcon>
-                            <ListItemText primary={text}/>
+                            <ListItemText onClick={() => navigate('/analysis')} primary={text}/>
                         </ListItemButton>
                     </ListItem>
                 ))}
