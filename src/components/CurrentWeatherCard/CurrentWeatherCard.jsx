@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Card, Typography, Stack, Container, Icon, Button } from "@mui/material";
 import { SettingContext } from "../../contexts/SettingContext.jsx";
-import { buildForecastURL } from "../../helpers/helpers.js";
+import { buildForecastURL, WeatherIcon } from "../../helpers/helpers.jsx";
 import { FORECAST_URL } from "../../consts/settingConstants.js";
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
-import { getWeatherIcon } from '../../consts/iconMaps.js';
 import './CurrentWeatherCard.scss'
 import { getWeatherText } from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
@@ -44,19 +43,6 @@ function CurrentWeatherCard() {
         }
         fetchCurrentWeather();
     }, [selectedLocation])
-
-    function WeatherIcon({ weatherCode, is_day, size = 48 }) {
-        const Icon = getWeatherIcon(weatherCode, is_day);
-        const color = getWeatherColor(weatherCode, is_day);
-        return (
-            <Icon
-                size={size}
-                color={color}
-                className={`weather-icon ${getIconClass(weatherCode)}`}
-            />
-        );
-
-    }
 
     return (
         loading ?
@@ -148,34 +134,5 @@ function CurrentWeatherCard() {
 
     );
 }
-
-function getIconClass(weatherCode) {
-    if (weatherCode === 0) return "sun";
-    if ([61, 63, 65, 80, 81, 82].includes(weatherCode)) return "rain";
-    if ([71, 73, 75, 85, 86].includes(weatherCode)) return "snow";
-    if ([95, 96, 99].includes(weatherCode)) return "thunder";
-    return "";
-}
-
-function getWeatherColor(weatherCode, isDay) {
-    if (weatherCode === 0) return isDay ? "#FDB813" : "#4A6FA5";
-
-    if ([1, 2, 3].includes(weatherCode)) return "#90A4AE";
-
-    if ([45, 48].includes(weatherCode)) return "#B0BEC5";
-
-    if (
-        [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode)
-    ) return "#4FC3F7";
-
-    if ([71, 73, 75, 77, 85, 86].includes(weatherCode))
-        return "#E1F5FE";
-
-    if ([95, 96, 99].includes(weatherCode))
-        return "#9575CD";
-
-    return "#90A4AE";
-}
-
 
 export default CurrentWeatherCard;

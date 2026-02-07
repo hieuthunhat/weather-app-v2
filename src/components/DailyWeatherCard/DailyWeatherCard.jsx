@@ -1,4 +1,4 @@
-import { Card, List } from "@mui/material";
+import { Card, List, Stack, Typography } from "@mui/material";
 import UnitCard from "../UnitCard/UnitCard";
 import DailyUnit from "../DailyUnit/DailyUnit";
 
@@ -22,11 +22,14 @@ const DailyWeatherCard = ({ data }) => {
 
     return (
         <Card>
-            <List>
-                {dailyForecastData.map((data, index) => (
-                    <DailyUnit data={data} id={index} />
-                ))}
-            </List>
+            <Stack padding={2}>
+                <Typography fontWeight={'bold'} fontSize={20}>7 Days Forecast</Typography>
+                <List>
+                    {dailyForecastData.map((data, index) => (
+                        <DailyUnit data={data} id={index} key={index} />
+                    ))}
+                </List>
+            </Stack>
         </Card>
     );
 };
