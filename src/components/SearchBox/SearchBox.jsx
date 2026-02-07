@@ -10,16 +10,16 @@ import {
     Stack,
     TextField, Typography
 } from '@mui/material';
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
-import {TiThMenu} from "react-icons/ti";
-import {SettingContext} from "../../contexts/SettingContext.jsx";
+import { TiThMenu } from "react-icons/ti";
+import { SettingContext } from "../../contexts/SettingContext.jsx";
 import { CiLocationOn } from "react-icons/ci";
 import { useNavigate } from 'react-router-dom';
 
 const SearchBox = () => {
-    const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
+    const { isOpenDrawer, setIsOpenDrawer } = useContext(SettingContext);
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -70,24 +70,24 @@ const SearchBox = () => {
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
     const navigate = useNavigate();
     const DrawerList = (
-        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
             <Box padding={2}>
                 <Typography component="h1" variant="h5">Weather App</Typography>
             </Box>
-            <Divider/>
+            <Divider />
             <List>
                 {['Analysis', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => navigate('/analysis')}>
                             <ListItemIcon>
                                 {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                             </ListItemIcon>
-                            <ListItemText onClick={() => navigate('/analysis')} primary={text}/>
+                            <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-            <Divider/>
+            <Divider />
             <Button>Light theme</Button>
         </Box>
     );
@@ -109,7 +109,7 @@ const SearchBox = () => {
                 <Button><CiLocationOn size={30} /></Button>
             </Stack>
             {query.length > 0 && suggestions.length > 0 && (
-                <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
+                <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions} />)}
             <Drawer open={isOpenDrawer} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
