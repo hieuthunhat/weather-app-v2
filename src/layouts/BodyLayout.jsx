@@ -5,6 +5,7 @@ import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherC
 import { SettingContext } from '../contexts/SettingContext.jsx';
 import EmptyState from '../components/EmptyState/EmptyState.jsx';
 import HourlyWeatherCard from '../components/HourlyWeatherCard/HourlyWeatherCard.jsx';
+import DailyWeatherCard from '../components/DailyWeatherCard/DailyWeatherCard.jsx';
 
 const BodyLayout = () => {
   const { location, data  } = useContext(SettingContext);
@@ -17,7 +18,7 @@ const BodyLayout = () => {
                 :
                 <EmptyState/>
             }
-            {data && <HourlyWeatherCard data={data} />}
+            {data && <DailyWeatherCard data={data} />}
         </Stack>
     // </Container>
   )

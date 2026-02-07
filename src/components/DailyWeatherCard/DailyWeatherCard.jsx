@@ -1,0 +1,34 @@
+import { Card, List } from "@mui/material";
+import UnitCard from "../UnitCard/UnitCard";
+import DailyUnit from "../DailyUnit/DailyUnit";
+
+const DailyWeatherCard = ({ data }) => {
+    const daily = data?.daily;
+
+    const dailyForecastData = daily?.time?.map((date, index) => ({
+        date,
+        weatherCode: daily.weather_code?.[index],
+        temperature_2m_max: daily.temperature_2m_max?.[index],
+        temperature_2m_min: daily.temperature_2m_min?.[index],
+        sunrise: daily.sunrise?.[index],
+        sunset: daily.sunset?.[index],
+        precipitationSum: daily.precipitation_sum?.[index],
+        rainSum: daily.rain_sum?.[index],
+        showersSum: daily.showers_sum?.[index],
+        snowfallSum: daily.snowfall_sum?.[index],
+    }));
+
+    console.log(dailyForecastData);
+
+    return (
+        <Card>
+            <List>
+                {dailyForecastData.map((data, index) => (
+                    <DailyUnit data={data} id={index} />
+                ))}
+            </List>
+        </Card>
+    );
+};
+
+export default DailyWeatherCard;
