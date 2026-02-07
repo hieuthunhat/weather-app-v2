@@ -84,7 +84,16 @@ function CurrentWeatherCard() {
                         </Box>
 
                         {/* Elements */}
-                        <Box width={'100%'}>
+                        <Stack width={'100%'} gap={2}>
+                            <iframe
+                                width="100%"
+                                height="300"
+                                style={{ border: 0 }}
+                                loading="lazy"
+                                allowFullScreen
+                                src={`https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}&z=15&output=embed`}
+                            />
+
                             <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}
                                 justifyContent={'center'} alignItems={'center'}>
 
@@ -127,7 +136,7 @@ function CurrentWeatherCard() {
                                     unitKey="WIND_GUSTS"
                                 />
                             </Stack>
-                        </Box>
+                        </Stack>
                     </Stack>
                 </Box>
             </Card>
