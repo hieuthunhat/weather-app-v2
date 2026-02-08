@@ -4,6 +4,10 @@ import DailyUnit from "../DailyUnit/DailyUnit";
 
 const DailyWeatherCard = ({ data }) => {
     const daily = data?.daily;
+    const dailyUnits = data?.daily_units;
+
+    console.log(dailyUnits);
+    
 
     const dailyForecastData = daily?.time?.map((date, index) => ({
         date,
@@ -16,9 +20,8 @@ const DailyWeatherCard = ({ data }) => {
         rainSum: daily.rain_sum?.[index],
         showersSum: daily.showers_sum?.[index],
         snowfallSum: daily.snowfall_sum?.[index],
+        daily_units: dailyUnits,
     }));
-
-    console.log(dailyForecastData);
 
     return (
         <Card>

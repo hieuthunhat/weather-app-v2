@@ -2,6 +2,13 @@ import { Box, Card, Collapse, Divider, ListItem, ListItemButton, Stack, Typograp
 import React, { useCallback, useState } from 'react'
 import { formatUnixWithTZ, WeatherIcon } from '../../helpers/helpers.jsx';
 import { getWeatherText } from '../../consts/weatherHelpTexts';
+import {
+  WiRain,
+  WiShowers,
+  WiSnow,
+  WiUmbrella,
+} from "react-icons/wi";
+
 
 /**
  * Date, Min, Max
@@ -12,7 +19,8 @@ import { getWeatherText } from '../../consts/weatherHelpTexts';
 const DailyUnit = ({ data, id }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
-
+    const temperatureUnit = data?.daily_units?.temperature_2m_max;
+    
     return (
         <ListItem key={id}>
             <ListItemButton onClick={toogleOpen}>
@@ -25,13 +33,14 @@ const DailyUnit = ({ data, id }) => {
                             <WeatherIcon weatherCode={data.weatherCode} size={50} />
                             <Typography>{getWeatherText(data.weatherCode)}</Typography>
                         </Stack>
-                        <Stack alignItems={'center'} justifyContent={'center'} width={60}>
+                        <Stack alignItems={'center'} justifyContent={'center'} width={100} flexDirection={'row'} gap={1}>
+                            <WiUmbrella size={50} />
                             <Typography>{data.precipitationSum} %</Typography>
                         </Stack>
-                        <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'} width={100}>
-                            <Typography fontWeight={'bold'}>{data.temperature_2m_max}</Typography>
+                        <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'} width={150}>
+                            <Typography fontWeight={'bold'}>{data.temperature_2m_max} {temperatureUnit}</Typography>
                             /
-                            <Typography>{data.temperature_2m_min}</Typography>
+                            <Typography>{data.temperature_2m_min} {temperatureUnit}</Typography>
                         </Stack>
                     </Stack>
                     <Collapse in={isOpen} timeout={'auto'} unmountOnExit>

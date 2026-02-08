@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Card, Typography, Stack, Container, Icon, Button } from "@mui/material";
+import { Box, Card, Typography, Stack, Container, Icon, Button, Divider } from "@mui/material";
 import { SettingContext } from "../../contexts/SettingContext.jsx";
 import { buildForecastURL, WeatherIcon } from "../../helpers/helpers.jsx";
 import { FORECAST_URL } from "../../consts/settingConstants.js";
@@ -82,6 +82,8 @@ function CurrentWeatherCard() {
                                 </Stack>
                             </Stack>
                         </Box>
+
+                        <Divider />
 
                         {/* Elements */}
                         <Stack width={'100%'} gap={2}>
