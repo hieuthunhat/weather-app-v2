@@ -3,10 +3,10 @@ import React, { useCallback, useState } from 'react'
 import { formatUnixWithTZ, WeatherIcon } from '../../helpers/helpers.jsx';
 import { getWeatherText } from '../../consts/weatherHelpTexts';
 import {
-  WiRain,
-  WiShowers,
-  WiSnow,
-  WiUmbrella,
+    WiRain,
+    WiShowers,
+    WiSnow,
+    WiUmbrella,
 } from "react-icons/wi";
 
 
@@ -20,9 +20,9 @@ const DailyUnit = ({ data, id }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
     const temperatureUnit = data?.daily_units?.temperature_2m_max;
-    
+
     return (
-        <ListItem key={id}>
+        <ListItem key={id} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.02)', '&hover': 'rgba(255, 255, 255, 0.08)' }}>
             <ListItemButton onClick={toogleOpen}>
                 <Stack width={'100%'}>
                     <Stack flexDirection={'row'} justifyContent={'space-between'} padding={2} gap={2} width={'100%'} flexWrap={'wrap'}>
