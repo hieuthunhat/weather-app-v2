@@ -6,9 +6,6 @@ const DailyWeatherCard = ({ data }) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
 
-    console.log(dailyUnits);
-    
-
     const dailyForecastData = daily?.time?.map((date, index) => ({
         date,
         weatherCode: daily.weather_code?.[index],
@@ -20,6 +17,9 @@ const DailyWeatherCard = ({ data }) => {
         rainSum: daily.rain_sum?.[index],
         showersSum: daily.showers_sum?.[index],
         snowfallSum: daily.snowfall_sum?.[index],
+        uvIndex: daily.uv_index_max?.[index],
+        windDirection: daily.wind_direction_10m_dominant?.[index],
+        windSpeed: daily.wind_speed_10m_max?.[index],
         daily_units: dailyUnits,
     }));
 

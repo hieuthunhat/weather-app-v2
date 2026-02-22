@@ -1,20 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Box, Card, Typography, Stack, Container, Icon, Button, Divider } from "@mui/material";
-import { SettingContext } from "../../contexts/SettingContext.jsx";
-import { buildForecastURL, WeatherIcon } from "../../helpers/helpers.jsx";
-import { FORECAST_URL } from "../../consts/settingConstants.js";
+import React, {useContext, useEffect, useState} from 'react';
+import {Box, Card, Typography, Stack, Container, Icon, Button, Divider} from "@mui/material";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
+import {buildForecastURL, WeatherIcon} from "../../helpers/helpers.jsx";
+import {FORECAST_URL} from "../../consts/settingConstants.js";
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
 import './CurrentWeatherCard.scss'
-import { getWeatherText } from '../../consts/weatherHelpTexts.js';
+import {getWeatherText} from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
 import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
 
 /**
- * 
- * @returns 
+ *
+ * @returns {React.JSX.Element}
+ * @constructor
  */
 function CurrentWeatherCard() {
-    const { location: selectedLocation, selectedFields, data, setData } = useContext(SettingContext);
+    const {location: selectedLocation, selectedFields, data, setData} = useContext(SettingContext);
     const [loading, setLoading] = useState(false)
     const fetchCurrentWeather = async () => {
         setLoading(true)
@@ -44,23 +45,32 @@ function CurrentWeatherCard() {
         fetchCurrentWeather();
     }, [selectedLocation])
 
+    const actionsList = [
+        {
+            name: "Dismiss",
+
+        }, {
+            name: "Pin"
+        }
+    ]
+
     return (
         loading ?
-            <LoadingSpinner />
+            <LoadingSpinner/>
             :
             <Card>
                 <Box padding={1}>
                     <Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>
-                        <ThreeDotsButton />
+                        <ThreeDotsButton actions={actionsList}/>
                     </Stack>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={'space-between'} paddingBlockEnd={'1rem'}
-                        alignItems={'center'} gap={'1.5rem'}>
+                    <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} paddingBlock={'1rem'}
+                           alignItems={'center'} gap={'1.5rem'}>
                         {/* Current weather */}
                         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'70%'}>
                             <Stack alignItems={'flex-start'}>
                                 <Box>
                                     <Typography fontWeight={'bold'}
-                                        fontSize={'xx-large'}>{selectedLocation.name}
+                                                fontSize={'xx-large'}>{selectedLocation.name}
                                     </Typography>
                                     <Typography>{selectedLocation.locationName}</Typography>
                                 </Box>
@@ -83,21 +93,21 @@ function CurrentWeatherCard() {
                             </Stack>
                         </Box>
 
-                        <Divider />
+                        <Divider/>
 
                         {/* Elements */}
                         <Stack width={'100%'} gap={2}>
                             <iframe
                                 width="100%"
                                 height="300"
-                                style={{ border: 0 }}
+                                style={{border: 0}}
                                 loading="lazy"
                                 allowFullScreen
                                 src={`https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}&z=15&output=embed`}
                             />
 
                             <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}
-                                justifyContent={'center'} alignItems={'center'}>
+                                   justifyContent={'space-evenly'} alignItems={'center'}>
 
                                 <UnitCard
                                     label="Feels like"
