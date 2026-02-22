@@ -6,9 +6,6 @@ const DailyWeatherCard = ({ data }) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
 
-    console.log(dailyUnits);
-    
-
     const dailyForecastData = daily?.time?.map((date, index) => ({
         date,
         weatherCode: daily.weather_code?.[index],
@@ -25,7 +22,6 @@ const DailyWeatherCard = ({ data }) => {
         windSpeed: daily.wind_speed_10m_max?.[index],
         daily_units: dailyUnits,
     }));
-    console.log(dailyForecastData);
 
     return (
         <Card>

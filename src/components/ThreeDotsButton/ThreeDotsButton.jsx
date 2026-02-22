@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Popover} from "@mui/material";
+import {Box, Button, List, ListItem, ListItemButton, ListItemText, Popover} from "@mui/material";
 import {BsThreeDots} from "react-icons/bs";
 
 function ThreeDotsButton({actions}) {
@@ -17,7 +17,7 @@ function ThreeDotsButton({actions}) {
     return (
         <Box>
             <Button onClick={handleClick}>
-                <BsThreeDots size={20} /></Button>
+                <BsThreeDots size={20}/></Button>
             <Popover
                 open={open}
                 anchorEl={anchorEl}
@@ -27,7 +27,28 @@ function ThreeDotsButton({actions}) {
                     horizontal: 'left',
                 }}
             >
-                dsadasd
+                <List>
+                    {actions.map(
+                        (
+                            action,
+                            index
+                        ) => {
+
+                            return (
+                                <ListItem
+                                    key={index}
+                                    disablePadding
+                                >
+                                    <ListItemButton
+                                    >
+                                        <ListItemText primary={action.name}
+                                        />
+                                    </ListItemButton>
+                                </ListItem>
+                            );
+                        }
+                    )}
+                </List>
             </Popover>
         </Box>
     );
