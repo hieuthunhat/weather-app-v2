@@ -11,7 +11,8 @@ import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
 
 /**
  *
- * @returns
+ * @returns {React.JSX.Element}
+ * @constructor
  */
 function CurrentWeatherCard() {
     const {location: selectedLocation, selectedFields, data, setData} = useContext(SettingContext);
@@ -60,7 +61,7 @@ function CurrentWeatherCard() {
             <Card>
                 <Box padding={1}>
                     <Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>
-                        <ThreeDotsButton actions={actionsList} />
+                        <ThreeDotsButton actions={actionsList}/>
                     </Stack>
                     <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} paddingBlock={'1rem'}
                            alignItems={'center'} gap={'1.5rem'}>
