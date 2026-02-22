@@ -18,6 +18,7 @@ import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
  * @returns
  */
 const DailyUnit = ({data, id}) => {
+    console.log(data)
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
     const temperatureUnit = data?.daily_units?.temperature_2m_max;
@@ -54,7 +55,7 @@ const DailyUnit = ({data, id}) => {
                                              rainSum={data.rainSum}
                                              snowFallSum={data.snowfallSum}
                                              uvIndex={data.uvIndex}
-                                             windDirection={data}
+                                             windDirection={data.windDirection}
 
                             />
                         </Card>

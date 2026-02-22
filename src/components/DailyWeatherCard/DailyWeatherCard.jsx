@@ -25,6 +25,7 @@ const DailyWeatherCard = ({ data }) => {
         windSpeed: daily.wind_speed_10m_max?.[index],
         daily_units: dailyUnits,
     }));
+    console.log(dailyForecastData);
 
     return (
         <Card>
