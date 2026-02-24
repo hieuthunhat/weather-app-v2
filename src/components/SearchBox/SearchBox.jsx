@@ -10,16 +10,16 @@ import {
     Stack,
     TextField, Typography
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
-import { TiThMenu } from "react-icons/ti";
-import { SettingContext } from "../../contexts/SettingContext.jsx";
-import { CiLocationOn } from "react-icons/ci";
-import { useNavigate } from 'react-router-dom';
+import {TiThMenu} from "react-icons/ti";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
+import {CiLocationOn} from "react-icons/ci";
+import {useNavigate} from 'react-router-dom';
 
 const SearchBox = () => {
-    const { isOpenDrawer, setIsOpenDrawer } = useContext(SettingContext);
+    const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -70,46 +70,47 @@ const SearchBox = () => {
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
     const navigate = useNavigate();
     const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
             <Box padding={2}>
                 <Typography component="h1" variant="h5">Weather App</Typography>
             </Box>
-            <Divider />
+            <Divider/>
             <List>
-                {['Analysis', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Analytics', 'Settings'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton onClick={() => navigate('/analysis')}>
+                        <ListItemButton onClick={() => navigate(text === 'Analytics' ? '/analysis' : '/settings')}>
                             <ListItemIcon>
-                                {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text}/>
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-            <Divider />
+            <Divider/>
             <Button>Light theme</Button>
         </Box>
     );
 
     return (
-        <Box paddingTop={2} sx={{ position: 'relative' }}>
-            <Stack direction="row" spacing={2} alignItems={'center'}>
-                <Button onClick={toggleDrawer(true)}><TiThMenu size={30} /></Button>
-                <TextField
-                    label="Search location"
-                    variant="outlined"
-                    fullWidth
-                    placeholder="Ex: Hanoi, Vietnam..."
-                    value={query}
-                    onChange={handleQueryChange}
-                    disabled={loading}
-                    size={'small'}
-                />
-                <Button><CiLocationOn size={30} /></Button>
+        <Box paddingTop={2}>
+            <Stack direction="row" alignItems={'center'} justifyContent={'space-between'}>
+                <Button onClick={toggleDrawer(true)}><TiThMenu size={30}/></Button>
+                <Stack display={'flex'} flexDirection={'row'} width={{xs: '80%', md: '40%'}} sx={{position: 'relative'}} gap={2}>
+                    <TextField
+                        label="Search location"
+                        variant="outlined"
+                        fullWidth
+                        placeholder="Ex: Hanoi, Vietnam..."
+                        value={query}
+                        onChange={handleQueryChange}
+                        disabled={loading}
+                        size={'small'}
+                    />
+                    <Button><CiLocationOn size={30}/></Button>
+                    {query.length > 0 && suggestions.length > 0 && (
+                        <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
+                </Stack>
             </Stack>
-            {query.length > 0 && suggestions.length > 0 && (
-                <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions} />)}
             <Drawer open={isOpenDrawer} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>

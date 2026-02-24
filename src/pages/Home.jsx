@@ -12,6 +12,7 @@ import {
     WIND_GUSTS_MAX, WIND_SPEED,
     WIND_SPEED_MAX
 } from "../consts/settingConstants.js";
+import SearchBox from "../components/SearchBox/SearchBox.jsx";
 
 function Home() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
@@ -39,6 +40,7 @@ function Home() {
         hideElements,
         setHideElements
     }}>
+        <SearchBox/>
         <BodyLayout/>
     </SettingContext.Provider>
 }
