@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Box, Card, Typography, Stack, Container, Icon, Button, Divider} from "@mui/material";
+import {Box, Card, Typography, Stack, Divider} from "@mui/material";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
-import {buildForecastURL, WeatherIcon} from "../../helpers/helpers.jsx";
-import {FORECAST_URL} from "../../consts/settingConstants.js";
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
+import {WeatherIcon} from "../../helpers/helpers.jsx";
 import './CurrentWeatherCard.scss'
 import {getWeatherText} from '../../consts/weatherHelpTexts.js';
 import UnitCard from '../UnitCard/UnitCard.jsx';
@@ -15,35 +13,7 @@ import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
  * @constructor
  */
 function CurrentWeatherCard() {
-    const {location: selectedLocation, selectedFields, data, setData} = useContext(SettingContext);
-    const [loading, setLoading] = useState(false)
-    const fetchCurrentWeather = async () => {
-        setLoading(true)
-        try {
-            const response = await fetch(buildForecastURL({
-                url: FORECAST_URL,
-                obj: selectedFields,
-                latitude: selectedLocation.latitude,
-                longitude: selectedLocation.longitude
-            }));
-
-            const json = await response.json();
-            setData(json);
-
-        } catch (e) {
-            console.error(e)
-            setLoading(false)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        if (!selectedLocation) {
-            return;
-        }
-        fetchCurrentWeather();
-    }, [selectedLocation])
+    const {location: selectedLocation, data} = useContext(SettingContext);
 
     const actionsList = [
         {
@@ -55,9 +25,6 @@ function CurrentWeatherCard() {
     ]
 
     return (
-        loading ?
-            <LoadingSpinner/>
-            :
             <Card>
                 <Box padding={1}>
                     <Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>
@@ -70,9 +37,9 @@ function CurrentWeatherCard() {
                             <Stack alignItems={'flex-start'}>
                                 <Box>
                                     <Typography fontWeight={'bold'}
-                                                fontSize={'xx-large'}>{selectedLocation.name}
+                                                fontSize={'xx-large'}>{selectedLocation?.name}
                                     </Typography>
-                                    <Typography>{selectedLocation.locationName}</Typography>
+                                    <Typography>{selectedLocation?.locationName}</Typography>
                                 </Box>
                                 <Stack direction="row" flexWrap={'wrap'} spacing={2} justifyContent={'center'}>
                                     <WeatherIcon
@@ -103,7 +70,7 @@ function CurrentWeatherCard() {
                                 style={{border: 0}}
                                 loading="lazy"
                                 allowFullScreen
-                                src={`https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}&z=15&output=embed`}
+                                src={`https://www.google.com/maps?q=${selectedLocation?.latitude},${selectedLocation?.longitude}&z=15&output=embed`}
                             />
 
                             <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}

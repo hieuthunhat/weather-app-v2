@@ -34,6 +34,4 @@ export const UV_INDEX_MAX = 'uv_index_max';
 
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
-
-export const CELSIUS = 'C';
-export const FAHRENHEIT = 'F';
+export const HISTORICAL_URL = 'https://archive-api.open-meteo.com/v1/archive';
