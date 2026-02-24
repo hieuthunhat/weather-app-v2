@@ -9,11 +9,9 @@ function App() {
 
     return (
         <Provider store={store}>
-            <SettingProvider>
-                <AppLayout>
-                    <AppRoutes/>
-                </AppLayout>
-            </SettingProvider>
+            <AppLayout>
+                <AppRoutes/>
+            </AppLayout>
         </Provider>
 
     )
