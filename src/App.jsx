@@ -1,20 +1,22 @@
 import './App.css'
 import AppRoutes from './AppRoutes.jsx'
-import { SettingProvider } from './contexts/SettingContext'
+import {SettingProvider} from './contexts/SettingContext'
 import AppLayout from './layouts/AppLayout'
 import {Provider} from "react-redux";
 import store from './store/store.js'
 
 function App() {
 
-  return (
-      <Provider store={store}>
-          <SettingProvider>
-              <AppRoutes/>
-          </SettingProvider>
-      </Provider>
+    return (
+        <Provider store={store}>
+            <SettingProvider>
+                <AppLayout>
+                    <AppRoutes/>
+                </AppLayout>
+            </SettingProvider>
+        </Provider>
 
-  )
+    )
 }
 
 export default App
