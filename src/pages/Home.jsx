@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useSelector} from "react-redux";
 import {SettingContext} from "../contexts/SettingContext.jsx";
 import BodyLayout from "../layouts/BodyLayout.jsx";
 import {
@@ -15,10 +16,11 @@ import {
 import SearchBox from "../components/SearchBox/SearchBox.jsx";
 
 function Home() {
+    const storedLocation = useSelector(state => state.weather.location);
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     const [theme, setTheme] = useState('light');
     const [data, setData] = useState()
-    const [location, setLocation] = useState(null);
+    const [location, setLocation] = useState(storedLocation);
     const [selectedFields, setSelectedFields] = useState({
         daily: [TEMPERATURE_MAX, TEMPERATURE_MIN, WIND_GUSTS_MAX, WIND_SPEED_MAX, SUNRISE, SUNSET, PRECIPITATION_SUM, DOMINANT_WIND_DIRECTION, UV_INDEX_MAX, WEATHER_CODE, SHOWERS_SUM, RAIN_SUM, SNOWFALL_SUM],
         current: [TEMPERATURE, WIND_SPEED, RELATIVE_HUMIDITY, WEATHER_CODE, IS_DAY, PRECIPITATION, SHOWERS, SNOWFALL, FEELS_LIKE_TEMPERATURE, WIND_DIRECTION, WIND_GUSTS, CLOUD_COVER],

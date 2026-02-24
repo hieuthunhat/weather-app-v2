@@ -13,9 +13,9 @@ const BodyLayout = () => {
         <Container>
             <Stack justifyContent={'center'} gap={2}>
                 {location ?
-                    <>
-                        <CurrentWeatherCard/>
-                    </>
+
+                    <CurrentWeatherCard/>
+
                     :
                     <EmptyState/>
                 }

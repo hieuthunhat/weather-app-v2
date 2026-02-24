@@ -78,7 +78,7 @@ const SearchBox = () => {
             <List>
                 {['Analytics', 'Settings'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton onClick={() => navigate(text === 'Analytics' ? '/analysis' : '/settings')}>
+                        <ListItemButton onClick={() => navigate(text === 'Analytics' ? '/analytics' : '/settings')}>
                             <ListItemIcon>
                             </ListItemIcon>
                             <ListItemText primary={text}/>
