@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
     Box,
     Divider,
@@ -8,17 +8,21 @@ import {
     ListItemText,
 } from '@mui/material';
 import {SettingContext} from '../../contexts/SettingContext.jsx';
+import {useDispatch, useSelector} from "react-redux";
+import {setLocationData} from "../../counters/counterSlice.js";
 
 function SuggestListBox({suggestions = [], setSuggestions}) {
     const {setLocation} = useContext(SettingContext);
+    const dispatch = useDispatch();
 
     const handleClickLocation = (value) => {
         setLocation(value);
+        dispatch(setLocationData(value));
         setSuggestions([]);
     };
 
     return (
-        <Box 
+        <Box
             role="presentation"
             sx={{
                 position: 'absolute',

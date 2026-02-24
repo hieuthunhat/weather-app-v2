@@ -1,39 +1,57 @@
-import { Box, Button, Container, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import React, { useContext } from 'react'
-import { SettingContext } from '../../contexts/SettingContext'
+import React, {useContext} from 'react'
+
+import SearchBox from "../SearchBox/SearchBox.jsx";
+import {
+    Box,
+    Button,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText, Stack,
+    Typography
+} from "@mui/material";
+import {TiThMenu} from "react-icons/ti";
+import {useNavigate} from "react-router-dom";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
 
 const Header = () => {
-    const { isOpenDrawer, setIsOpenDrawer } = useContext(SettingContext);
-
+    const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
+    const navigate = useNavigate();
     const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+            <Box padding={2}>
+                <Typography component="h1" variant="h5">Weather App</Typography>
+            </Box>
+            <Divider/>
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Home', 'Analytics', 'Settings'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => navigate(text === 'Analytics' ? '/analytics' : text === 'Settings' ? '/settings' : '/')}>
                             <ListItemIcon>
-                                {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text}/>
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-            <Divider />
+            <Divider/>
             <Button>Light theme</Button>
         </Box>
     );
-
     return (
-        <Box width={'100'} bgcolor={'red'} display={'flex'} justifyContent={'space-between'}>
-            <p>Header here</p>
-            <Button onClick={toggleDrawer(true)}>Open here</Button>
+        <Box paddingTop={2}>
+            <Stack direction="row" alignItems={'center'} justifyContent={'space-between'}>
+                <Button onClick={toggleDrawer(true)}><TiThMenu size={30}/></Button>
+                <SearchBox />
+            </Stack>
             <Drawer open={isOpenDrawer} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
         </Box>
-
     )
 }
 
