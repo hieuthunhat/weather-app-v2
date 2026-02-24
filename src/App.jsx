@@ -1,14 +1,18 @@
-// import './App.css'
-import Approutes from './Approutes'
+import './App.css'
+import AppRoutes from './AppRoutes.jsx'
 import { SettingProvider } from './contexts/SettingContext'
 import AppLayout from './layouts/AppLayout'
+import {Provider} from "react-redux";
+import store from './store/store.js'
 
 function App() {
 
   return (
-    <SettingProvider>
-      <Approutes />
-    </SettingProvider>
+      <Provider store={store}>
+          <SettingProvider>
+              <AppRoutes/>
+          </SettingProvider>
+      </Provider>
 
   )
 }
