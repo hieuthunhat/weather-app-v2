@@ -1,14 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {
     Box,
-    Divider,
     List,
     ListItem,
     ListItemButton,
     ListItemText,
 } from '@mui/material';
 import {SettingContext} from '../../contexts/SettingContext.jsx';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setLocationData} from "../../counters/counterSlice.js";
 
 function SuggestListBox({suggestions = [], setSuggestions}) {

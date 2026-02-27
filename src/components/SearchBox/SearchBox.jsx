@@ -1,50 +1,23 @@
 import {
-    Box,
-    Button, Divider, Drawer,
-    Icon,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
+    Button,
     Stack,
-    TextField, Typography
+    TextField
 } from '@mui/material';
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
 import {CiLocationOn} from "react-icons/ci";
+import {useFetch} from "../../hooks/useFetch.js";
 
 const SearchBox = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const fetchSuggestions = async (value) => {
-        if (!value.trim()) {
-            setSuggestions([]);
-            return;
-        }
-        setLoading(true);
-        try {
-            const res = await fetch(
-                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-                    value
-                )}&count=6&language=en&format=json`
-            );
-
-            if (!res.ok) return;
-
-            const data = await res.json();
-            setSuggestions(data.results ?? []);
-        } catch (e) {
-            console.error(e)
-        } finally {
-            setLoading(false);
-        }
-
-    }
-
+    const {
+        fetchApi, loading
+    } = useFetch({url: '', initLoad: false, successfullyFetch: data => {
+            console.log(data)
+            setSuggestions(data?.results || [])
+        }})
 
     const debouncedQuery = useDebounce(query, 1000);
 
@@ -54,7 +27,11 @@ const SearchBox = () => {
             return;
         }
 
-        fetchSuggestions(debouncedQuery);
+        const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+            debouncedQuery
+        )}&count=6&language=en&format=json`
+
+        fetchApi(url);
     }, [debouncedQuery]);
 
 
