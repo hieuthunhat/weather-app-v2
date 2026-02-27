@@ -17,10 +17,9 @@ import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
  * @param {*} param0
  * @returns
  */
-const DailyUnit = ({data, id}) => {
+const HourlyUnit = ({data, id}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
-    const temperatureUnit = data?.daily_units?.temperature_2m_max;
 
     return (
         <ListItem key={id} sx={{backgroundColor: 'rgba(0, 0, 0, 0.02)', '&hover': 'rgba(255, 255, 255, 0.08)'}}>
@@ -36,7 +35,7 @@ const DailyUnit = ({data, id}) => {
                         <Grid item size={3}>
                             <Box display="flex" justifyContent="center" alignItems="center">
                                 <Typography>
-                                    {formatUnixWithTZ({unix: data.date, format: "dddd, DD-MM-YYYY"})}
+                                    {formatUnixWithTZ({unix: data.date, allowHours: true})}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -49,13 +48,6 @@ const DailyUnit = ({data, id}) => {
                         </Grid>
 
                         <Grid item size={2}>
-                            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                                <WiUmbrella size={50}/>
-                                <Typography>{data.precipitationSum} %</Typography>
-                            </Box>
-                        </Grid>
-
-                        <Grid item size={2}>
                             <Box
                                 display="flex"
                                 gap={1}
@@ -63,24 +55,26 @@ const DailyUnit = ({data, id}) => {
                                 justifyContent="center"
                             >
                                 <Typography fontWeight="bold">
-                                    {data.temperature_2m_max} {temperatureUnit}
+                                    {data.temperature_2m} {data.hourly_units?.temperature_2m}
                                 </Typography>
-                                /
-                                <Typography>
-                                    {data.temperature_2m_min} {temperatureUnit}
-                                </Typography>
+                            </Box>
+                        </Grid>
+
+                        <Grid item size={2}>
+                            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                                <WiUmbrella size={50}/>
+                                <Typography>{data.precipitation} %</Typography>
                             </Box>
                         </Grid>
                     </Grid>
                     <Collapse in={isOpen} timeout={'auto'} unmountOnExit>
                         <Card>
-                            <DetailDailyCard sunRise={data.sunrise} sunSet={data.sunset}
-                                             precipitationSum={data.precipitationSum} showersSum={data.showersSum}
-                                             rainSum={data.rainSum}
-                                             snowFallSum={data.snowfallSum}
-                                             uvIndex={data.uvIndex}
-                                             windDirection={data.windDirection}
-
+                            <DetailDailyCard
+                                precipitationSum={data.precipitation}
+                                showers={data.showers}
+                                rain={data.rain}
+                                snowFall={data.snowfall}
+                                windDirection={data.windDirection}
                             />
                         </Card>
                     </Collapse>
@@ -91,4 +85,4 @@ const DailyUnit = ({data, id}) => {
     )
 }
 
-export default DailyUnit
+export default HourlyUnit

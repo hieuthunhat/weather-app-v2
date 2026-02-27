@@ -12,8 +12,8 @@ import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
  * @returns {React.JSX.Element}
  * @constructor
  */
-function CurrentWeatherCard() {
-    const {location: selectedLocation, data} = useContext(SettingContext);
+function CurrentWeatherCard({data}) {
+    const {location: selectedLocation} = useContext(SettingContext);
 
     const actionsList = [
         {

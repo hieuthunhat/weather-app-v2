@@ -19,19 +19,20 @@ export const buildForecastURL = ({url, obj, latitude, longitude}) => {
  * @param {string} tz - timezone, ví dụ: "Asia/Ho_Chi_Minh"
  * @param {string} format - format output
  * @param allowHours
+ * @param timezoneType
  */
 export const formatUnixWithTZ = (
     {
         unix,
         tz = moment.tz.guess(),
-        format = "dddd DD-MM-YYYY",
+        format = "dddd",
         allowHours = false
     }
 ) => {
     let finalFormat = format;
     if (!unix) return "";
     if (allowHours) {
-        finalFormat = format + " h:mm A";
+        finalFormat = "h:mm A " + format;
     }
 
     return moment.unix(unix).tz(tz).format(finalFormat);

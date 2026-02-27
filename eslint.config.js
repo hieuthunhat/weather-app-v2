@@ -1,29 +1,38 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
+module.exports = {
+    'env': {
+        'browser': true,
+        'es6': true
+    },
+    'extends': [
+        'google',
+        'prettier',
+        'plugin:react/recommended'
     ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
+    'globals': {
+        'Atomics': 'readonly',
+        'SharedArrayBuffer': 'readonly'
     },
-    rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+    'parser': 'babel-eslint',
+    'parserOptions': {
+        'ecmaFeatures': {
+            'jsx': true
+        },
+        'ecmaVersion': 2018,
+        'sourceType': 'module'
     },
-  },
-])
+    'plugins': [
+        'prettier',
+        'react'
+    ],
+    'rules': {
+        'prettier/prettier': 'error',
+        "require-jsdoc" : 0,
+        "valid-jsdoc": 0,
+        'new-cap': 0
+    },
+    'settings': {
+        'react': {
+            'version': '^16.8.6'
+        }
+    },
+};

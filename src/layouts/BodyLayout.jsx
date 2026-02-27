@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
 import {SettingContext} from '../contexts/SettingContext.jsx';
 import EmptyState from '../components/EmptyState/EmptyState.jsx';
-import DailyWeatherCard from '../components/DailyWeatherCard/DailyWeatherCard.jsx';
+import HourlyWeatherCard from '../components/HourlyWeatherCard/HourlyWeatherCard.jsx';
 import {buildForecastURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL} from "../consts/settingConstants.js";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
@@ -12,7 +12,8 @@ import {useFetch} from "../hooks/useFetch.js";
 
 const BodyLayout = () => {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields} = useContext(SettingContext);
+    const {selectedFields, setSelectedFields} = useContext(SettingContext);
+    // setSelectedFields({...selectedFields, current: []})
 
     const {data: weatherData, loading, fetchApi} = useFetch({
         url: buildForecastURL({
@@ -36,8 +37,8 @@ const BodyLayout = () => {
                 {selectedLocation ?
                     loading ? <LoadingSpinner/> :
                         <>
-                            <CurrentWeatherCard/>
-                            {weatherData && <DailyWeatherCard data={weatherData}/>}
+                            {weatherData && <CurrentWeatherCard data={weatherData}/>}
+                            {weatherData && <HourlyWeatherCard data={weatherData}/>}
                         </>
                     :
                     <EmptyState/>
