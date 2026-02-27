@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Box, Card, Typography, Stack, Divider} from "@mui/material";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
 import {WeatherIcon} from "../../helpers/helpers.jsx";

@@ -28,7 +28,7 @@ const DailyWeatherCard = ({ data }) => {
             <Stack padding={2}>
                 <Typography fontWeight={'bold'} fontSize={20}>7 Days Forecast</Typography>
                 <List>
-                    {dailyForecastData.map((data, index) => (
+                    {dailyForecastData?.map((data, index) => (
                         <DailyUnit data={data} id={index} key={index} />
                     ))}
                 </List>

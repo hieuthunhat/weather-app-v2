@@ -8,46 +8,36 @@ import DailyWeatherCard from '../components/DailyWeatherCard/DailyWeatherCard.js
 import {buildForecastURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL} from "../consts/settingConstants.js";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
+import {useFetch} from "../hooks/useFetch.js";
 
 const BodyLayout = () => {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, data, setData} = useContext(SettingContext);
-    const [loading, setLoading] = useState(false)
-    const fetchCurrentWeather = async () => {
-        setLoading(true)
-        try {
-            const response = await fetch(buildForecastURL({
-                url: FORECAST_URL,
-                obj: selectedFields,
-                latitude: selectedLocation.latitude,
-                longitude: selectedLocation.longitude
-            }));
+    const {selectedFields} = useContext(SettingContext);
 
-            const json = await response.json();
-            setData(json);
-
-        } catch (e) {
-            console.error(e)
-            setLoading(false)
-        } finally {
-            setLoading(false)
-        }
-    }
+    const {data: weatherData, loading, fetchApi} = useFetch({
+        url: buildForecastURL({
+            url: FORECAST_URL,
+            obj: selectedFields,
+            latitude: selectedLocation?.latitude,
+            longitude: selectedLocation?.longitude
+        }),
+        initLoad: false
+    })
 
     useEffect(() => {
         if (!selectedLocation) {
             return;
         }
-        fetchCurrentWeather();
+        fetchApi();
     }, [selectedLocation])
     return (
         <Container>
             <Stack justifyContent={'center'} gap={2}>
                 {selectedLocation ?
-                    loading ? <LoadingSpinner /> :
+                    loading ? <LoadingSpinner/> :
                         <>
                             <CurrentWeatherCard/>
-                            {data && <DailyWeatherCard data={data}/>}
+                            {weatherData && <DailyWeatherCard data={weatherData}/>}
                         </>
                     :
                     <EmptyState/>
