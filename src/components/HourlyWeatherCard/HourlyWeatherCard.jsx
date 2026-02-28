@@ -2,7 +2,7 @@ import { Card, List, Stack, Typography, useMediaQuery } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { formatUnixWithTZ } from "../../helpers/helpers.jsx";
-import HourlyUnit from "../DailyUnit/HourlyUnit.jsx";
+import DailyWeatherCard from "../DailyWeatherCard/DailyWeatherCard.jsx";
 
 const timeAxisConfig = (timeData, scaleType = "point") => ({
     data: timeData,
@@ -44,7 +44,7 @@ const HourlyWeatherCard = ({ data }) => {
     //                 </Typography>
     //                 <List>
     //                     {hourlyForecastData.map((item, index) => (
-    //                         <HourlyUnit data={item} id={index} key={index} />
+    //                         <DailyWeatherCard data={item} id={index} key={index} />
     //                     ))}
     //                 </List>
     //             </Stack>

@@ -17,7 +17,7 @@ import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
  * @param {*} param0
  * @returns
  */
-const HourlyUnit = ({data, id}) => {
+const DailyWeatherCard = ({data, id}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
 
@@ -85,4 +85,4 @@ const HourlyUnit = ({data, id}) => {
     )
 }
 
-export default HourlyUnit
+export default DailyWeatherCard

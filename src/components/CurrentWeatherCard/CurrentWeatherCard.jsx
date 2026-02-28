@@ -27,9 +27,9 @@ function CurrentWeatherCard({data}) {
     return (
             <Card>
                 <Box padding={1}>
-                    <Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>
-                        <ThreeDotsButton actions={actionsList}/>
-                    </Stack>
+                    {/*<Stack justifyContent={'flex-end'} flexDirection={'row'} paddingBlockStart={'0.5rem'}>*/}
+                    {/*    <ThreeDotsButton actions={actionsList}/>*/}
+                    {/*</Stack>*/}
                     <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} paddingBlock={'1rem'}
                            alignItems={'center'} gap={'1.5rem'}>
                         {/* Current weather */}
@@ -66,7 +66,7 @@ function CurrentWeatherCard({data}) {
                         <Stack width={'100%'} gap={2}>
                             <iframe
                                 width="100%"
-                                height="300"
+                                height="250"
                                 style={{border: 0}}
                                 loading="lazy"
                                 allowFullScreen

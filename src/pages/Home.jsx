@@ -1,21 +1,22 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
-import { useSelector } from "react-redux";
-import { Container, Stack } from "@mui/material";
+import {useSelector} from "react-redux";
+import {Container, Grid, Stack} from "@mui/material";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
 import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
-import { SettingContext } from "../contexts/SettingContext.jsx";
-import { useFetch } from "../hooks/useFetch.js";
-import { buildForecastURL } from "../helpers/helpers.jsx";
-import { FORECAST_URL } from "../consts/settingConstants.js";
+import {SettingContext} from "../contexts/SettingContext.jsx";
+import {useFetch} from "../hooks/useFetch.js";
+import {buildForecastURL} from "../helpers/helpers.jsx";
+import {FORECAST_URL} from "../consts/settingConstants.js";
+import DailyWeatherCard from "../components/DailyWeatherCard/DailyWeatherCard.jsx";
 
 function Home() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const { selectedFields, setSelectedFields } = useContext(SettingContext);
+    const {selectedFields, setSelectedFields} = useContext(SettingContext);
     // setSelectedFields({...selectedFields, current: []})
 
-    const { data: weatherData, loading, fetchApi } = useFetch({
+    const {data: weatherData, loading, fetchApi} = useFetch({
         url: buildForecastURL({
             url: FORECAST_URL,
             obj: selectedFields,
@@ -34,13 +35,17 @@ function Home() {
     return (
         <Stack justifyContent={'center'} gap={2}>
             {selectedLocation ?
-                loading ? <LoadingSpinner /> :
-                    <>
-                        {weatherData && <CurrentWeatherCard data={weatherData} />}
-                        {weatherData && <HourlyWeatherCard data={weatherData} />}
-                    </>
+                loading ? <LoadingSpinner/> :
+                    <Grid container spacing={2} columns={16}>
+                        <Grid size={10}>
+                            {weatherData && <CurrentWeatherCard data={weatherData}/>}
+                        </Grid>
+                        <Grid>
+                            <DailyWeatherCard  data={weatherData}/ />
+                        </Grid>
+                    </Grid>
                 :
-                <EmptyState />
+                <EmptyState/>
             }
         </Stack>
     )
