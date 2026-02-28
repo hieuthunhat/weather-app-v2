@@ -40,8 +40,8 @@ function Home() {
                         <Grid size={10}>
                             {weatherData && <CurrentWeatherCard data={weatherData}/>}
                         </Grid>
-                        <Grid>
-                            <DailyWeatherCard  data={weatherData}/ />
+                        <Grid size={'grow'}>
+                            <DailyWeatherCard data={weatherData} />
                         </Grid>
                     </Grid>
                 :
