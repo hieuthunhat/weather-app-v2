@@ -1,10 +1,8 @@
 import React from "react";
 import {Box, Stack, Typography, Divider} from "@mui/material";
 
-import {WiSunrise, WiSunset, WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
+import { WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
 import {MdWaterDrop} from "react-icons/md";
-import {BsSun} from "react-icons/bs";
-import {formatUnixWithTZ} from "../../helpers/helpers.jsx";
 
 function StatItem({icon, label, value}) {
     return (

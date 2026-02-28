@@ -22,35 +22,35 @@ const HourlyWeatherCard = ({ data }) => {
 
     const time = hourly.time;
 
-    if (!isLargeScreen) {
-        const hourlyForecastData = time.map((date, index) => ({
-            date,
-            weatherCode: hourly.weather_code?.[index],
-            temperature_2m: hourly.temperature_2m?.[index],
-            precipitation: hourly.precipitation?.[index],
-            rain: hourly.rain?.[index],
-            showers: hourly.showers?.[index],
-            snowfall: hourly.snowfall?.[index],
-            windDirection: hourly.wind_direction_10m?.[index],
-            windSpeed: hourly.wind_speed_10m?.[index],
-            hourly_units: units,
-        }));
+    // if (!isLargeScreen) {
+    //     const hourlyForecastData = time.map((date, index) => ({
+    //         date,
+    //         weatherCode: hourly.weather_code?.[index],
+    //         temperature_2m: hourly.temperature_2m?.[index],
+    //         precipitation: hourly.precipitation?.[index],
+    //         rain: hourly.rain?.[index],
+    //         showers: hourly.showers?.[index],
+    //         snowfall: hourly.snowfall?.[index],
+    //         windDirection: hourly.wind_direction_10m?.[index],
+    //         windSpeed: hourly.wind_speed_10m?.[index],
+    //         hourly_units: units,
+    //     }));
 
-        return (
-            <Card>
-                <Stack padding={2}>
-                    <Typography fontWeight="bold" fontSize={20}>
-                        7 Days Forecast
-                    </Typography>
-                    <List>
-                        {hourlyForecastData.map((item, index) => (
-                            <HourlyUnit data={item} id={index} key={index} />
-                        ))}
-                    </List>
-                </Stack>
-            </Card>
-        );
-    }
+    //     return (
+    //         <Card>
+    //             <Stack padding={2}>
+    //                 <Typography fontWeight="bold" fontSize={20}>
+    //                     7 Days Forecast
+    //                 </Typography>
+    //                 <List>
+    //                     {hourlyForecastData.map((item, index) => (
+    //                         <HourlyUnit data={item} id={index} key={index} />
+    //                     ))}
+    //                 </List>
+    //             </Stack>
+    //         </Card>
+    //     );
+    // }
 
     return (
         <Stack spacing={3}>

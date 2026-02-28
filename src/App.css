@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 } */
+
+.header-container{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}

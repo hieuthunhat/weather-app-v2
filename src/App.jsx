@@ -14,7 +14,9 @@ function App() {
             <SettingProvider>
                 <BrowserRouter>
                     <AppLayout>
-                        <Header />
+                        <div className={'header-container'}>
+                            <Header/>
+                        </div>
                         <AppRoutes/>
                     </AppLayout>
                 </BrowserRouter>
