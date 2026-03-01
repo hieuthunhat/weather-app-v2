@@ -44,6 +44,9 @@ export const SettingProvider = ({children}) => {
         hourly: [HOURLY_TEMPERATURE, HOURLY_RELATIVE_HUMIDITY, HOURLY_FEELS_LIKE_TEMPERATURE, HOURLY_WIND_SPEED, HOURLY_PRECIPITATION, HOURLY_RAIN, HOURLY_SHOWERS, HOURLY_SNOWFALL, HOURLY_WIND_DIRECTION, HOURLY_WIND_GUSTS, HOURLY_CLOUD_COVER, WEATHER_CODE],
         temperature_unit: []
     });
+    const [selectedHistoricalFields, setSelectedHistoricalFields] = useState({
+        hourly: [HOURLY_TEMPERATURE, HOURLY_RELATIVE_HUMIDITY, HOURLY_FEELS_LIKE_TEMPERATURE, HOURLY_WIND_SPEED, HOURLY_PRECIPITATION, HOURLY_RAIN, HOURLY_SHOWERS, HOURLY_SNOWFALL, HOURLY_WIND_DIRECTION, HOURLY_WIND_GUSTS, HOURLY_CLOUD_COVER, WEATHER_CODE]
+    })
     const [hideElements, setHideElements] = useState([]);
 
     return <SettingContext.Provider value={{
@@ -58,7 +61,9 @@ export const SettingProvider = ({children}) => {
         data,
         setData,
         hideElements,
-        setHideElements
+        setHideElements,
+        selectedHistoricalFields,
+        setSelectedHistoricalFields
     }}>
         {children}
     </SettingContext.Provider>

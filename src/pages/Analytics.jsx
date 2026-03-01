@@ -1,17 +1,18 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState, useMemo} from 'react';
 import {useSelector} from "react-redux";
 import {SettingContext} from "../contexts/SettingContext.jsx";
 import {useFetch} from "../hooks/useFetch.js";
-import {buildForecastURL} from "../helpers/helpers.jsx";
-import {FORECAST_URL} from "../consts/settingConstants.js";
-import {Container, Stack} from "@mui/material";
+import {buildForecastURL, buildHistoricalURL} from "../helpers/helpers.jsx";
+import {FORECAST_URL, HISTORICAL_URL} from "../consts/settingConstants.js";
+import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
 import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
+import moment from "moment-timezone";
 
 function Analytics() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, setSelectedFields} = useContext(SettingContext);
+    const {selectedFields, selectedHistoricalFields} = useContext(SettingContext);
     // setSelectedFields({...selectedFields, current: []})
 
     const {data: weatherData, loading, fetchApi} = useFetch({
@@ -22,21 +23,132 @@ function Analytics() {
             longitude: selectedLocation?.longitude
         }),
         initLoad: false
+    });
+
+    const today = moment().format('YYYY-MM-DD');
+
+// 7 days earlier
+    const sevenDaysAgo = moment().subtract(7, 'days').format('YYYY-MM-DD');
+
+    const {data: historicalData, loading: historicalLoading, fetchApi: fetchHistoricalApi} = useFetch({
+        url: buildHistoricalURL({
+            url: HISTORICAL_URL,
+            latitude: selectedLocation?.latitude,
+            longitude: selectedLocation?.longitude,
+            startDate: sevenDaysAgo,
+            endDate: today,
+            obj: selectedHistoricalFields,
+        })
     })
+
+    const [selectedDate, setSelectedDate] = useState('');
 
     useEffect(() => {
         if (!selectedLocation) {
             return;
         }
         fetchApi();
+        fetchHistoricalApi();
     }, [selectedLocation])
+
+    const mergedHourly = useMemo(() => {
+        const historical = historicalData?.hourly;
+        const forecast = weatherData?.hourly;
+        if (!historical?.time && !forecast?.time) return null;
+        if (!historical?.time) return forecast;
+        if (!forecast?.time) return historical;
+
+        const allKeys = new Set([
+            ...Object.keys(historical),
+            ...Object.keys(forecast),
+        ]);
+
+        const merged = {};
+        for (const key of allKeys) {
+            merged[key] = [
+                ...(historical[key] ?? []),
+                ...(forecast[key] ?? []),
+            ];
+        }
+        return merged;
+    }, [weatherData, historicalData]);
+
+    const mergedUnits = useMemo(() => {
+        return {
+            ...historicalData?.hourly_units,
+            ...weatherData?.hourly_units,
+        };
+    }, [weatherData, historicalData]);
+
+    const availableDates = useMemo(() => {
+        if (!mergedHourly?.time) return [];
+        const seen = new Set();
+        return mergedHourly.time.reduce((acc, unix) => {
+            const dateStr = moment.unix(unix).format('YYYY-MM-DD');
+            if (!seen.has(dateStr)) {
+                seen.add(dateStr);
+                acc.push({
+                    value: dateStr,
+                    label: moment.unix(unix).format('ddd, MMM D'),
+                });
+            }
+            return acc;
+        }, []);
+    }, [mergedHourly]);
+
+    useEffect(() => {
+        if (availableDates.length > 0 && !selectedDate) {
+            setSelectedDate(availableDates[0].value);
+        }
+    }, [availableDates]);
+
+    const filteredData = useMemo(() => {
+        if (!mergedHourly?.time || !selectedDate) return weatherData;
+
+        const indices = [];
+        mergedHourly.time.forEach((unix, index) => {
+            if (moment.unix(unix).format('YYYY-MM-DD') === selectedDate) {
+                indices.push(index);
+            }
+        });
+
+        const filteredHourly = {};
+        for (const [key, values] of Object.entries(mergedHourly)) {
+            filteredHourly[key] = indices.map(i => values[i]);
+        }
+
+        return {
+            ...weatherData,
+            hourly: filteredHourly,
+            hourly_units: mergedUnits,
+        };
+    }, [mergedHourly, mergedUnits, weatherData, selectedDate]);
+
     return (
         <Stack justifyContent={'center'} gap={2}>
             {selectedLocation ?
-                loading ?
+                (loading || historicalLoading) ?
                     <LoadingSpinner/>
                     :
-                    weatherData && <HourlyWeatherCard data={weatherData}/>
+                    <Box>
+                        <FormControl size={'medium'} sx={{ minWidth: 200 }}>
+                            <InputLabel id="date-select-label">Date</InputLabel>
+                            <Select
+                                labelId="date-select-label"
+                                id="date-select"
+                                value={selectedDate}
+                                label="Date"
+                                onChange={(e) => setSelectedDate(e.target.value)}
+                            >
+                                {availableDates.map((date) => (
+                                    <MenuItem key={date.value} value={date.value}>
+                                        {date.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <HourlyWeatherCard data={filteredData}/>
+                    </Box>
                 :
                 <EmptyState/>
             }
