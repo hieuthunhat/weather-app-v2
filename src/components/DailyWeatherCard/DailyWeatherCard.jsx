@@ -1,8 +1,24 @@
-import { Card, List, Stack, Typography } from "@mui/material";
-import UnitCard from "../UnitCard/UnitCard";
-import DailyUnit from "../DailyUnit/DailyUnit";
+import {Box, Card, Collapse, Divider, Grid, List, ListItem, ListItemButton, Stack, Typography} from '@mui/material'
+import React, {useCallback, useState} from 'react'
+import {formatUnixWithTZ, WeatherIcon} from '../../helpers/helpers.jsx';
+import {getWeatherText} from '../../consts/weatherHelpTexts';
+import {
+    WiRain,
+    WiShowers,
+    WiSnow,
+    WiUmbrella,
+} from "react-icons/wi";
+import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
+import DailyUnit from "../DailyUnit/DailyUnit.jsx";
 
-const DailyWeatherCard = ({ data }) => {
+
+/**
+ * Date, Min, Max
+ * Dropdown
+ * @param {*} param0
+ * @returns
+ */
+const DailyWeatherCard = ({data, id}) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
 
@@ -23,18 +39,19 @@ const DailyWeatherCard = ({ data }) => {
         daily_units: dailyUnits,
     }));
 
+    console.log(dailyForecastData)
+
     return (
         <Card>
-            <Stack padding={2}>
-                <Typography fontWeight={'bold'} fontSize={20}>7 Days Forecast</Typography>
-                <List>
-                    {dailyForecastData.map((data, index) => (
-                        <DailyUnit data={data} id={index} key={index} />
-                    ))}
-                </List>
-            </Stack>
+            <List>
+                {dailyForecastData?.map((forecast, index) =>
+                    (
+                        <DailyUnit data={forecast} index={index} />
+                    )
+                )}
+            </List>
         </Card>
-    );
-};
+    )
+}
 
-export default DailyWeatherCard;
+export default DailyWeatherCard

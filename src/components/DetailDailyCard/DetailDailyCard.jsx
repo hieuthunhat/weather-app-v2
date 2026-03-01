@@ -1,10 +1,8 @@
 import React from "react";
 import {Box, Stack, Typography, Divider} from "@mui/material";
 
-import {WiSunrise, WiSunset, WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
+import { WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
 import {MdWaterDrop} from "react-icons/md";
-import {BsSun} from "react-icons/bs";
-import {formatUnixWithTZ} from "../../helpers/helpers.jsx";
 
 function StatItem({icon, label, value}) {
     return (
@@ -24,14 +22,11 @@ function StatItem({icon, label, value}) {
 }
 
 function DetailDailyCard({
-                             sunRise,
-                             sunSet,
-                             precipitationSum = 0,
+                             precipitation = 0,
                              windDirection = 0,
-                             uvIndex = 0,
-                             showersSum = 0,
-                             rainSum = 0,
-                             snowFallSum = 0
+                             showers = 0,
+                             rain = 0,
+                             snowFall = 0
                          }) {
     return (
 
@@ -44,45 +39,32 @@ function DetailDailyCard({
 
             <Stack spacing={1.2} padding={1}>
                 <StatItem
-                    icon={<WiSunrise/>}
-                    label="Sunrise"
-                    value={formatUnixWithTZ({unix: sunRise, format: ' h:mm A'})}
-                />
-
-                <StatItem
-                    icon={<WiSunset/>}
-                    label="Sunset"
-                    value={formatUnixWithTZ({unix: sunSet, format: ' h:mm A'})}
-                />
-
-                <StatItem
                     icon={<MdWaterDrop/>}
                     label="Precipitation"
-                    value={precipitationSum}
+                    value={precipitation}
                 />
 
                 <StatItem
                     icon={<WiRain/>}
                     label="Rain"
-                    value={rainSum}
+                    value={rain}
+                />
+                <StatItem
+                    icon={<WiRain/>}
+                    label="Showers"
+                    value={showers}
                 />
 
                 <StatItem
                     icon={<WiSnow/>}
                     label="Snowfall"
-                    value={snowFallSum}
+                    value={snowFall}
                 />
 
                 <StatItem
                     icon={<WiStrongWind/>}
                     label="Wind Direction"
                     value={`${windDirection}°`}
-                />
-
-                <StatItem
-                    icon={<BsSun/>}
-                    label="UV Index"
-                    value={uvIndex}
                 />
             </Stack>
         </Stack>

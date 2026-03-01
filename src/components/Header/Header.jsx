@@ -43,7 +43,7 @@ const Header = () => {
         </Box>
     );
     return (
-        <Box paddingTop={2}>
+        <Box paddingBlock={1.5} bgcolor={'aqua'}>
             <Stack direction="row" alignItems={'center'} justifyContent={'space-between'}>
                 <Button onClick={toggleDrawer(true)}><TiThMenu size={30}/></Button>
                 <SearchBox />

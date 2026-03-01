@@ -11,27 +11,40 @@ export const buildForecastURL = ({url, obj, latitude, longitude}) => {
         .map(([key, value]) => `${key}=${value.join(",")}`)
         .join("&");
 
-    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime`;
+    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime&forecast_days=16`;
+};
+export const buildHistoricalURL = ({url, obj, latitude, longitude, startDate, endDate}) => {
+    if (latitude == null || longitude == null) {
+        return null;
+    }
+
+    const query = Object.entries(obj)
+        .filter(([_, value]) => Array.isArray(value) && value.length > 0)
+        .map(([key, value]) => `${key}=${value.join(",")}`)
+        .join("&");
+
+    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime&start_date=${startDate}&end_date=${endDate}`;
 };
 
 /**
  * @param {number} unix - unix timestamp (seconds)
- * @param {string} tz - timezone, ví dụ: "Asia/Ho_Chi_Minh"
+ * @param {string} tz - timezone: "Asia/Ho_Chi_Minh"
  * @param {string} format - format output
  * @param allowHours
+ * @param timezoneType
  */
 export const formatUnixWithTZ = (
     {
         unix,
         tz = moment.tz.guess(),
-        format = "dddd DD-MM-YYYY",
+        format = "dddd",
         allowHours = false
     }
 ) => {
     let finalFormat = format;
     if (!unix) return "";
     if (allowHours) {
-        finalFormat = format + " h:mm A";
+        finalFormat = "h:mm A " + format;
     }
 
     return moment.unix(unix).tz(tz).format(finalFormat);

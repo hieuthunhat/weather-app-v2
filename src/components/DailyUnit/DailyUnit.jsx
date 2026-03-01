@@ -1,42 +1,50 @@
-import {Box, Card, Collapse, Divider, Grid, ListItem, ListItemButton, Stack, Typography} from '@mui/material'
-import React, {useCallback, useState} from 'react'
-import {formatUnixWithTZ, WeatherIcon} from '../../helpers/helpers.jsx';
-import {getWeatherText} from '../../consts/weatherHelpTexts';
-import {
-    WiRain,
-    WiShowers,
-    WiSnow,
-    WiUmbrella,
-} from "react-icons/wi";
+import React, {useCallback, useState} from 'react';
+import {Box, Card, Collapse, Divider, Grid, ListItem, ListItemButton, Stack, Typography} from "@mui/material";
+import {formatUnixWithTZ, WeatherIcon} from "../../helpers/helpers.jsx";
+import {getWeatherText} from "../../consts/weatherHelpTexts.js";
+import {WiUmbrella} from "react-icons/wi";
 import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
 
-
 /**
- * Date, Min, Max
- * Dropdown
- * @param {*} param0
- * @returns
+ *
+ * @param data
+ * @param index
+ * @returns {React.JSX.Element}
+ * @constructor
  */
-const DailyUnit = ({data, id}) => {
+function DailyUnit({data, index}) {
     const [isOpen, setIsOpen] = useState(false);
     const toogleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen])
-    const temperatureUnit = data?.daily_units?.temperature_2m_max;
-
     return (
-        <ListItem key={id} sx={{backgroundColor: 'rgba(0, 0, 0, 0.02)', '&hover': 'rgba(255, 255, 255, 0.08)'}}>
-            <ListItemButton onClick={toogleOpen}>
-                <Stack width={'100%'}>
-                    <Grid
+        <ListItem
+            key={index}
+            sx={
+                {
+                    backgroundColor: 'rgba(0, 0, 0, 0.02)', '&hover':
+                        'rgba(255, 255, 255, 0.08)'
+                }
+            }>
+            <
+                ListItemButton
+                onClick={toogleOpen}>
+                < Stack
+                    width={'100%'}>
+                    < Grid
                         container
                         spacing={2}
                         alignItems="center"
                         justifyContent="space-between"
                         wrap="wrap"
                     >
-                        <Grid item size={3}>
-                            <Box display="flex" justifyContent="center" alignItems="center">
+                        < Grid
+                            item
+                            size={3}>
+                            <Box
+                                display="flex"
+                                justifyContent="start"
+                                alignItems="start">
                                 <Typography>
-                                    {formatUnixWithTZ({unix: data.date, format: "dddd, DD-MM-YYYY"})}
+                                    {formatUnixWithTZ({unix: data.date})}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -49,13 +57,6 @@ const DailyUnit = ({data, id}) => {
                         </Grid>
 
                         <Grid item size={2}>
-                            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                                <WiUmbrella size={50}/>
-                                <Typography>{data.precipitationSum} %</Typography>
-                            </Box>
-                        </Grid>
-
-                        <Grid item size={2}>
                             <Box
                                 display="flex"
                                 gap={1}
@@ -63,24 +64,26 @@ const DailyUnit = ({data, id}) => {
                                 justifyContent="center"
                             >
                                 <Typography fontWeight="bold">
-                                    {data.temperature_2m_max} {temperatureUnit}
+                                    {data.temperature_2m} {data.hourly_units?.temperature_2m}
                                 </Typography>
-                                /
-                                <Typography>
-                                    {data.temperature_2m_min} {temperatureUnit}
-                                </Typography>
+                            </Box>
+                        </Grid>
+
+                        <Grid item size={2}>
+                            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                                <WiUmbrella size={50}/>
+                                <Typography>{data.precipitationSum} %</Typography>
                             </Box>
                         </Grid>
                     </Grid>
                     <Collapse in={isOpen} timeout={'auto'} unmountOnExit>
                         <Card>
-                            <DetailDailyCard sunRise={data.sunrise} sunSet={data.sunset}
-                                             precipitationSum={data.precipitationSum} showersSum={data.showersSum}
-                                             rainSum={data.rainSum}
-                                             snowFallSum={data.snowfallSum}
-                                             uvIndex={data.uvIndex}
-                                             windDirection={data.windDirection}
-
+                            <DetailDailyCard
+                                precipitationSum={data.precipitationSum}
+                                showers={data.showersSum}
+                                rain={data.rainSum}
+                                snowFall={data.snowfallSum}
+                                windDirection={data.windDirection}
                             />
                         </Card>
                     </Collapse>
@@ -91,4 +94,4 @@ const DailyUnit = ({data, id}) => {
     )
 }
 
-export default DailyUnit
+export default DailyUnit;
