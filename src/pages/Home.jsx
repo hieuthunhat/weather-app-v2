@@ -4,7 +4,6 @@ import {useSelector} from "react-redux";
 import {Container, Grid, Stack} from "@mui/material";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
-import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
 import {SettingContext} from "../contexts/SettingContext.jsx";
 import {useFetch} from "../hooks/useFetch.js";
 import {buildForecastURL} from "../helpers/helpers.jsx";
@@ -33,15 +32,15 @@ function Home() {
         fetchApi();
     }, [selectedLocation])
     return (
-        <Stack justifyContent={'center'} gap={2}>
+        <Stack justifyContent={'center'} gap={2} padding={2}>
             {selectedLocation ?
                 loading ? <LoadingSpinner/> :
                     <Grid container spacing={2} columns={16}>
-                        <Grid size={10}>
-                            {weatherData && <CurrentWeatherCard data={weatherData}/>}
+                        <Grid size={{ xs: 16, md: 10 }}>
+                            <CurrentWeatherCard data={weatherData}/>
                         </Grid>
-                        <Grid size={'grow'}>
-                            <DailyWeatherCard data={weatherData} />
+                        <Grid size={{ xs: 16, md: 'grow' }}>
+                            <DailyWeatherCard data={weatherData}/>
                         </Grid>
                     </Grid>
                 :
