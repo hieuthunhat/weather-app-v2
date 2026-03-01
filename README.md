@@ -14,3 +14,45 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+Based on your app's weather-focused design with aqua/cyan accents and the existing color palette, here's my suggestion:
+
+Light Theme — clean, airy, sky-inspired:
+
+┌──────────────────────┬──────────────────┬───────────────────────────────┐                                                                                                                                                             
+│        Token         │      Color       │             Usage             │                                                                                                                                                             
+├──────────────────────┼──────────────────┼───────────────────────────────┤                                                                                                                                                             
+│ Primary              │ #0288D1          │ Buttons, active states, links │                                                                                                                                                             
+├──────────────────────┼──────────────────┼───────────────────────────────┤                                                                                                                                                             
+│ Secondary            │ #4FC3F7          │ Accents, weather icons, chips │
+├──────────────────────┼──────────────────┼───────────────────────────────┤                                                                                                                                                             
+│ Background (default) │ #F5F7FA          │ Page background               │                                                                                                                                                             
+├──────────────────────┼──────────────────┼───────────────────────────────┤                                                                                                                                                             
+│ Background (paper)   │ #FFFFFF          │ Cards, surfaces               │                                                                                                                                                             
+├──────────────────────┼──────────────────┼───────────────────────────────┤                                                                                                                                                             
+│ Text primary         │ #1A2138          │ Headings, body                │
+├──────────────────────┼──────────────────┼───────────────────────────────┤
+│ Text secondary       │ #5F6B7A          │ Subtitles, labels             │
+├──────────────────────┼──────────────────┼───────────────────────────────┤
+│ Divider              │ rgba(0,0,0,0.08) │ Separators                    │
+└──────────────────────┴──────────────────┴───────────────────────────────┘
+
+Dark Theme — deep night sky:
+
+┌──────────────────────┬────────────────────────┬───────────────────────────────┐
+│        Token         │         Color          │             Usage             │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Primary              │ #4FC3F7                │ Buttons, active states, links │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Secondary            │ #81D4FA                │ Accents, weather icons, chips │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Background (default) │ #0D1117                │ Page background               │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Background (paper)   │ #161B22                │ Cards, surfaces               │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Text primary         │ #E6EDF3                │ Headings, body                │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Text secondary       │ #8B949E                │ Subtitles, labels             │
+├──────────────────────┼────────────────────────┼───────────────────────────────┤
+│ Divider              │ rgba(255,255,255,0.08) │ Separators                    │
+└──────────────────────┴────────────────────────┴───────────────────────────────┘

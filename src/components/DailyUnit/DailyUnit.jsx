@@ -18,12 +18,7 @@ function DailyUnit({data, index}) {
     return (
         <ListItem
             key={index}
-            sx={
-                {
-                    backgroundColor: 'rgba(0, 0, 0, 0.02)', '&hover':
-                        'rgba(255, 255, 255, 0.08)'
-                }
-            }>
+            sx={{backgroundColor: 'action.hover'}}>
             <
                 ListItemButton
                 onClick={toogleOpen}>
