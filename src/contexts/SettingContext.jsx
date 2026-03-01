@@ -35,7 +35,6 @@ export const SettingContext = createContext();
 export const SettingProvider = ({children}) => {
     const storedLocation = useSelector(state => state.weather.location);
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
-    const [theme, setTheme] = useState('light');
     const [data, setData] = useState()
     const [location, setLocation] = useState(storedLocation);
     const [selectedFields, setSelectedFields] = useState({
@@ -52,8 +51,6 @@ export const SettingProvider = ({children}) => {
     return <SettingContext.Provider value={{
         isOpenDrawer,
         setIsOpenDrawer,
-        theme,
-        setTheme,
         setLocation,
         location,
         selectedFields,

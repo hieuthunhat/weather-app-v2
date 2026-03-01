@@ -6,6 +6,7 @@ import {BrowserRouter} from "react-router-dom";
 import store from './store/store.js'
 import {SettingProvider} from "./contexts/SettingContext.jsx";
 import Header from "./components/Header/Header.jsx";
+import {ThemeProvider} from "./contexts/ThemeContext.jsx";
 
 function App() {
 
@@ -13,12 +14,14 @@ function App() {
         <Provider store={store}>
             <SettingProvider>
                 <BrowserRouter>
-                    <AppLayout>
-                        <div className={'header-container'}>
-                            <Header/>
-                        </div>
-                        <AppRoutes/>
-                    </AppLayout>
+                    <ThemeProvider>
+                        <AppLayout>
+                            <div className={'header-container'}>
+                                <Header/>
+                            </div>
+                            <AppRoutes/>
+                        </AppLayout>
+                    </ThemeProvider>
                 </BrowserRouter>
             </SettingProvider>
         </Provider>

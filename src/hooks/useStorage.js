@@ -1,14 +1,28 @@
-// import { useState } from "react"
+import { useState } from "react";
 
-// export const useStoreage = ({key, initialValue}) => {
+export const useStorage = ({ key, initialValue }) => {
+    const getValue = () => {
+        try {
+            const storedValue = localStorage.getItem(key);
+            return storedValue ? JSON.parse(storedValue) : initialValue;
+        } catch (error) {
+            return initialValue;
+        }
+    };
 
-//     const getValue = () => {
-//         const storedValue = localStorage.getItem(key);
-//         return storedValue ? JSON.parse(storedValue) : initialValue;
-//     }
+    const [value, setValue] = useState(getValue);
 
-//     const setStoredValue = (key, value) => {
-//         localStorage.setItem(key, JSON.stringify(value));
-//         setValue(value);
-//     }
-// }
+    const setStoredValue = (newValue) => {
+        try {
+            const valueToStore =
+                newValue instanceof Function ? newValue(value) : newValue;
+
+            setValue(valueToStore);
+            localStorage.setItem(key, JSON.stringify(valueToStore));
+        } catch (error) {
+            console.error("Error saving to localStorage", error);
+        }
+    };
+
+    return [value, setStoredValue];
+};

@@ -14,13 +14,19 @@ import {
     Typography
 } from "@mui/material";
 import {TiThMenu} from "react-icons/ti";
+import {MdDarkMode, MdLightMode} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
 import {SettingContext} from "../../contexts/SettingContext.jsx";
+import {ThemeContext} from "../../contexts/ThemeContext.jsx";
+import {DARK_THEME} from "../../consts/settingConstants.js";
 
 const Header = () => {
     const {isOpenDrawer, setIsOpenDrawer} = useContext(SettingContext);
+    const {theme, setNewTheme} = useContext(ThemeContext);
     const toggleDrawer = (value) => () => setIsOpenDrawer(value)
     const navigate = useNavigate();
+    const isDark = theme === DARK_THEME;
+
     const DrawerList = (
         <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
             <Box padding={2}>
@@ -39,13 +45,21 @@ const Header = () => {
                 ))}
             </List>
             <Divider/>
-            <Button>Light theme</Button>
+            <Button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setNewTheme();
+                }}
+                startIcon={isDark ? <MdLightMode/> : <MdDarkMode/>}
+            >
+                {isDark ? 'Light' : 'Dark'} theme
+            </Button>
         </Box>
     );
     return (
-        <Box paddingBlock={1.5} bgcolor={'aqua'}>
+        <Box paddingBlock={1.5} bgcolor={'primary.main'}>
             <Stack direction="row" alignItems={'center'} justifyContent={'space-between'}>
-                <Button onClick={toggleDrawer(true)}><TiThMenu size={30}/></Button>
+                <Button onClick={toggleDrawer(true)} sx={{color: 'primary.contrastText'}}><TiThMenu size={30}/></Button>
                 <SearchBox />
             </Stack>
             <Drawer open={isOpenDrawer} onClose={toggleDrawer(false)}>

@@ -9,10 +9,12 @@ import {useFetch} from "../hooks/useFetch.js";
 import {buildForecastURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL} from "../consts/settingConstants.js";
 import DailyWeatherCard from "../components/DailyWeatherCard/DailyWeatherCard.jsx";
+import {ThemeContext} from "@emotion/react";
 
 function Home() {
     const selectedLocation = useSelector(state => state.weather.location);
     const {selectedFields, setSelectedFields} = useContext(SettingContext);
+    const {theme} = useContext(ThemeContext);
     // setSelectedFields({...selectedFields, current: []})
 
     const {data: weatherData, loading, fetchApi} = useFetch({
