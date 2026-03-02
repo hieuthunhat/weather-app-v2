@@ -44,6 +44,7 @@ export const WIND_SPEED_MAX = 'wind_speed_10m_max';
 export const WIND_GUSTS_MAX = 'wind_gusts_10m_max';
 export const DOMINANT_WIND_DIRECTION = 'wind_direction_10m_dominant';
 export const UV_INDEX_MAX = 'uv_index_max';
+export const PRECIPITATION_PROBABILITY_MAX = 'precipitation_probability_max';
 
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';

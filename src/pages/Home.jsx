@@ -34,7 +34,7 @@ function Home() {
         fetchApi();
     }, [selectedLocation])
     return (
-        <Stack justifyContent={'center'} gap={2} padding={2}>
+        <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'} width={'100%'} margin={'0 auto'}>
             {selectedLocation ?
                 loading ? <LoadingSpinner/> :
                     <Grid container spacing={2} columns={16}>

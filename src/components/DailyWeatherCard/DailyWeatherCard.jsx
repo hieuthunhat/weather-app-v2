@@ -18,7 +18,7 @@ import DailyUnit from "../DailyUnit/DailyUnit.jsx";
  * @param {*} param0
  * @returns
  */
-const DailyWeatherCard = ({data, id}) => {
+const DailyWeatherCard = ({data}) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
 
@@ -30,26 +30,32 @@ const DailyWeatherCard = ({data, id}) => {
         sunrise: daily.sunrise?.[index],
         sunset: daily.sunset?.[index],
         precipitationSum: daily.precipitation_sum?.[index],
+        precipitationProbability: daily?.precipitation_probability_max?.[index],
         rainSum: daily.rain_sum?.[index],
         showersSum: daily.showers_sum?.[index],
         snowfallSum: daily.snowfall_sum?.[index],
         uvIndex: daily.uv_index_max?.[index],
         windDirection: daily.wind_direction_10m_dominant?.[index],
         windSpeed: daily.wind_speed_10m_max?.[index],
-        daily_units: dailyUnits,
+        daily_units: dailyUnits
     }));
 
     console.log(dailyForecastData)
 
     return (
         <Card>
-            <List>
-                {dailyForecastData?.map((forecast, index) =>
-                    (
-                        <DailyUnit data={forecast} index={index} />
-                    )
-                )}
-            </List>
+            <Stack padding={1}>
+                <Typography fontWeight={'bold'}
+                            fontSize={'x-large'}>7 days forecast
+                </Typography>
+                <List>
+                    {dailyForecastData?.map((forecast, index) =>
+                        (
+                            <DailyUnit data={forecast} index={index}/>
+                        )
+                    )}
+                </List>
+            </Stack>
         </Card>
     )
 }

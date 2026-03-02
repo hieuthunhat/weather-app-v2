@@ -25,9 +25,9 @@ function CurrentWeatherCard({data}) {
     ]
 
     return (
-        <Stack padding={1} maxWidth={1200} justifyContent="center" spacing={1} alignItems={'center'}>
+        <Stack maxWidth={1200} justifyContent="center" spacing={1} alignItems={'center'}>
             <Card>
-                <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} paddingBlock={'1rem'} padding={1}
+                <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={'space-between'} padding={2}
                        alignItems={'center'} gap={'1.5rem'}>
                     {/* Current weather */}
                     <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'70%'}>
@@ -60,7 +60,7 @@ function CurrentWeatherCard({data}) {
                     <Divider/>
 
                     {/* Elements */}
-                    <Stack width={'100%'} gap={2}>
+                    <Stack width={'100%'} gap={2} padding={1}>
                         <iframe
                             width="100%"
                             height="250"
@@ -70,8 +70,8 @@ function CurrentWeatherCard({data}) {
                             src={`https://www.google.com/maps?q=${selectedLocation?.latitude},${selectedLocation?.longitude}&z=15&output=embed`}
                         />
 
-                        <Stack gap={'1.5rem'} display={'flex'} flexDirection={'row'} flexWrap={'wrap'}
-                               justifyContent={'space-between'} alignItems={'center'}>
+                        <Stack gap={2} flexDirection={'row'} flexWrap={'wrap'}
+                               justifyContent={'space-between'} alignItems={'center'} padding={1} maxWidth={600} width="100%">
 
                             <UnitCard
                                 label="Feels like"

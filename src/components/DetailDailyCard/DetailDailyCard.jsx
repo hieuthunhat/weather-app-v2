@@ -1,8 +1,9 @@
 import React from "react";
 import {Box, Stack, Typography, Divider} from "@mui/material";
 
-import { WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
+import {WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
 import {MdWaterDrop} from "react-icons/md";
+import {formatUnixWithTZ} from "../../helpers/helpers.jsx";
 
 function StatItem({icon, label, value}) {
     return (
@@ -22,50 +23,64 @@ function StatItem({icon, label, value}) {
 }
 
 function DetailDailyCard({
+                             time,
                              precipitation = 0,
                              windDirection = 0,
                              showers = 0,
                              rain = 0,
-                             snowFall = 0
+                             snowFall = 0,
+                             sunSet = 0,
+                             sunRise = 0
                          }) {
     return (
 
         <Stack display="flex" justifyContent="space-between" flexWrap={'wrap'} padding={1}>
-            <Typography variant="h6" fontWeight={600}>
-                Day Details
-            </Typography>
+            <Stack flexDirection={'column'} alignItems={'flex-start'}>
+                <Typography variant="h6" fontWeight={600} flexWrap={'wrap'} paddingInlineStart={1}>
+                    Day Details:
+                </Typography>
+                <Typography variant="span" flexWrap={'wrap'} paddingInlineStart={3}>
+                    {time}
+                </Typography>
+            </Stack>
 
             <Divider/>
 
             <Stack spacing={1.2} padding={1}>
-                <StatItem
-                    icon={<MdWaterDrop/>}
-                    label="Precipitation"
-                    value={precipitation}
-                />
+                <Stack>
+                    <StatItem
+                        icon={<MdWaterDrop/>}
+                        label="Precipitation"
+                        value={precipitation}
+                    />
 
-                <StatItem
-                    icon={<WiRain/>}
-                    label="Rain"
-                    value={rain}
-                />
-                <StatItem
-                    icon={<WiRain/>}
-                    label="Showers"
-                    value={showers}
-                />
+                    <StatItem
+                        icon={<WiRain/>}
+                        label="Rain"
+                        value={rain}
+                    />
+                    <StatItem
+                        icon={<WiRain/>}
+                        label="Showers"
+                        value={showers}
+                    />
 
-                <StatItem
-                    icon={<WiSnow/>}
-                    label="Snowfall"
-                    value={snowFall}
-                />
+                    <StatItem
+                        icon={<WiSnow/>}
+                        label="Snowfall"
+                        value={snowFall}
+                    />
 
-                <StatItem
-                    icon={<WiStrongWind/>}
-                    label="Wind Direction"
-                    value={`${windDirection}°`}
-                />
+                    <StatItem
+                        icon={<WiStrongWind/>}
+                        label="Wind Direction"
+                        value={`${windDirection}°`}
+                    />
+                </Stack>
+                <Stack>
+                    <StatItem label={'Sun rises'} value={formatUnixWithTZ({unix: sunRise, format: 'h:mm A'})} />
+                    <StatItem label={'Sun sets'} value={formatUnixWithTZ({unix: sunSet, format: 'h:mm A'})} />
+                </Stack>
             </Stack>
         </Stack>
 
