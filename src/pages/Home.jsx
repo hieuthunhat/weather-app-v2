@@ -9,13 +9,16 @@ import {useFetch} from "../hooks/useFetch.js";
 import {buildForecastURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL} from "../consts/settingConstants.js";
 import DailyWeatherCard from "../components/DailyWeatherCard/DailyWeatherCard.jsx";
-import {ThemeContext} from "@emotion/react";
+import ForecastHourlyCard from "../components/ForecastHourlyCard/ForecastHourlyCard.jsx";
 
+/**
+ *
+ * @returns {Element}
+ * @constructor
+ */
 function Home() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, setSelectedFields} = useContext(SettingContext);
-    const {theme} = useContext(ThemeContext);
-    // setSelectedFields({...selectedFields, current: []})
+    const {selectedFields} = useContext(SettingContext);
 
     const {data: weatherData, loading, fetchApi} = useFetch({
         url: buildForecastURL({
@@ -34,14 +37,18 @@ function Home() {
         fetchApi();
     }, [selectedLocation])
     return (
-        <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'} width={'100%'} margin={'0 auto'}>
+        <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'} width={'100%'}
+               margin={'0 auto'}>
             {selectedLocation ?
                 loading ? <LoadingSpinner/> :
                     <Grid container spacing={2} columns={16}>
-                        <Grid size={{ xs: 16, md: 10 }}>
-                            <CurrentWeatherCard data={weatherData}/>
+                        <Grid size={{xs: 16, md: 10}}>
+                            <Stack spacing={2}>
+                                <CurrentWeatherCard data={weatherData}/>
+                                <ForecastHourlyCard data={weatherData}/>
+                            </Stack>
                         </Grid>
-                        <Grid size={{ xs: 16, md: 'grow' }}>
+                        <Grid size={{xs: 16, md: 'grow'}}>
                             <DailyWeatherCard data={weatherData}/>
                         </Grid>
                     </Grid>

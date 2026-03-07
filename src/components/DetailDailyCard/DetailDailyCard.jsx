@@ -1,7 +1,6 @@
 import React from "react";
 import {Box, Stack, Typography, Divider} from "@mui/material";
-
-import {WiRain, WiSnow, WiStrongWind} from "react-icons/wi";
+import {WiRain, WiSnow, WiStrongWind, WiSunrise, WiSunset} from "react-icons/wi";
 import {MdWaterDrop} from "react-icons/md";
 import {formatUnixWithTZ} from "../../helpers/helpers.jsx";
 
@@ -70,16 +69,27 @@ function DetailDailyCard({
                         label="Snowfall"
                         value={snowFall}
                     />
-
+                </Stack>
+                <Divider />
+                <Stack>
                     <StatItem
                         icon={<WiStrongWind/>}
                         label="Wind Direction"
                         value={`${windDirection}°`}
                     />
                 </Stack>
+                <Divider />
                 <Stack>
-                    <StatItem label={'Sun rises'} value={formatUnixWithTZ({unix: sunRise, format: 'h:mm A'})} />
-                    <StatItem label={'Sun sets'} value={formatUnixWithTZ({unix: sunSet, format: 'h:mm A'})} />
+                    <StatItem 
+                        icon={<WiSunrise/>}
+                        label={'Sunrise'} 
+                        value={formatUnixWithTZ({unix: sunRise, format: 'h:mm A'})} 
+                    />
+                    <StatItem 
+                        icon={<WiSunset/>}
+                        label={'Sunset'} 
+                        value={formatUnixWithTZ({unix: sunSet, format: 'h:mm A'})} 
+                    />
                 </Stack>
             </Stack>
         </Stack>

@@ -71,7 +71,7 @@ function CurrentWeatherCard({data}) {
                         />
 
                         <Stack gap={2} flexDirection={'row'} flexWrap={'wrap'}
-                               justifyContent={'space-between'} alignItems={'center'} padding={1} maxWidth={600} width="100%">
+                               alignItems={'center'} padding={1} margin={'0 auto'}>
 
                             <UnitCard
                                 label="Feels like"

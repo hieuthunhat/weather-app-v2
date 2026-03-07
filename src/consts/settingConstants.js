@@ -48,5 +48,10 @@ export const PRECIPITATION_PROBABILITY_MAX = 'precipitation_probability_max';
 
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
+
+export const FORECAST_DAYS_OPTIONS = [
+    { label: '7 days', value: 7 },
+    { label: '16 days', value: 16 },
+];
 export const HISTORICAL_URL = 'https://archive-api.open-meteo.com/v1/archive';
 export const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'

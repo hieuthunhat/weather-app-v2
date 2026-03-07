@@ -1,28 +1,14 @@
-import {Box, Card, Collapse, Divider, Grid, List, ListItem, ListItemButton, Stack, Typography} from '@mui/material'
-import React, {useCallback, useState} from 'react'
-import {formatUnixWithTZ, WeatherIcon} from '../../helpers/helpers.jsx';
-import {getWeatherText} from '../../consts/weatherHelpTexts';
-import {
-    WiRain,
-    WiShowers,
-    WiSnow,
-    WiUmbrella,
-} from "react-icons/wi";
-import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
+import {Card, List, MenuItem, Select, Stack, Typography} from '@mui/material'
+import React, {useMemo, useState} from 'react'
 import DailyUnit from "../DailyUnit/DailyUnit.jsx";
+import {FORECAST_DAYS_OPTIONS} from "../../consts/settingConstants.js";
 
-
-/**
- * Date, Min, Max
- * Dropdown
- * @param {*} param0
- * @returns
- */
 const DailyWeatherCard = ({data}) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
+    const [forecastDays, setForecastDays] = useState(FORECAST_DAYS_OPTIONS[0]);
 
-    const dailyForecastData = daily?.time?.map((date, index) => ({
+    const allForecastData = useMemo(() => daily?.time?.map((date, index) => ({
         date,
         weatherCode: daily.weather_code?.[index],
         temperature_2m_max: daily.temperature_2m_max?.[index],
@@ -38,22 +24,35 @@ const DailyWeatherCard = ({data}) => {
         windDirection: daily.wind_direction_10m_dominant?.[index],
         windSpeed: daily.wind_speed_10m_max?.[index],
         daily_units: dailyUnits
-    }));
+    })) ?? [], [daily, dailyUnits]);
 
-    console.log(dailyForecastData)
+    const displayedForecastData = useMemo(
+        () => allForecastData.slice(0, forecastDays.value),
+        [allForecastData, forecastDays.value]
+    );
 
     return (
         <Card>
             <Stack padding={1}>
-                <Typography fontWeight={'bold'}
-                            fontSize={'x-large'}>7 days forecast
-                </Typography>
+                <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                    <Typography fontWeight={'bold'} fontSize={'x-large'}>
+                        {forecastDays.label} forecast
+                    </Typography>
+                    <Select
+                        size="small"
+                        value={forecastDays.value}
+                        onChange={(e) => setForecastDays(FORECAST_DAYS_OPTIONS.find(opt => opt.value === e.target.value))}
+                        sx={{fontSize: 14}}
+                    >
+                        {FORECAST_DAYS_OPTIONS.map(opt => (
+                            <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                        ))}
+                    </Select>
+                </Stack>
                 <List>
-                    {dailyForecastData?.map((forecast, index) =>
-                        (
-                            <DailyUnit data={forecast} index={index}/>
-                        )
-                    )}
+                    {displayedForecastData.map((forecast, index) => (
+                        <DailyUnit key={index} data={forecast} index={index}/>
+                    ))}
                 </List>
             </Stack>
         </Card>

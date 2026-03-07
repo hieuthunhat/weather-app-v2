@@ -28,32 +28,48 @@ const Header = () => {
     const isDark = theme === DARK_THEME;
 
     const DrawerList = (
-        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+        <Box
+            sx={{width: 250}}
+            role="presentation"
+            onClick={toggleDrawer(false)}
+            height={'100%'}
+            display={'flex'}
+            flexDirection={'column'}
+        >
             <Box padding={2}>
                 <Typography component="h1" variant="h5">Weather App</Typography>
             </Box>
             <Divider/>
-            <List>
-                {['Home', 'Analytics', 'Settings'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton onClick={() => navigate(text === 'Analytics' ? '/analytics' : text === 'Settings' ? '/settings' : '/')}>
-                            <ListItemIcon>
-                            </ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider/>
-            <Button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setNewTheme();
-                }}
-                startIcon={isDark ? <MdLightMode/> : <MdDarkMode/>}
-            >
-                {isDark ? 'Light' : 'Dark'} theme
-            </Button>
+            <Stack justifyContent={'space-between'} flexGrow={1}>
+                <List>
+                    {['Home', 'Analytics', 'Settings'].map((text, index) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton
+                                onClick={() => navigate(text === 'Analytics' ? '/analytics' : text === 'Settings' ? '/settings' : '/')}>
+                                <ListItemIcon>
+                                </ListItemIcon>
+                                <ListItemText primary={text}/>
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+                <Stack>
+                    <Divider/>
+                    <Stack alignItems={'center'} padding={2}>
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setNewTheme();
+                            }}
+                            startIcon={isDark ? <MdLightMode/> : <MdDarkMode/>}
+                            fullWidth
+                            variant="outlined"
+                        >
+                            {isDark ? 'Light' : 'Dark'} theme
+                        </Button>
+                    </Stack>
+                </Stack>
+            </Stack>
         </Box>
     );
     return (

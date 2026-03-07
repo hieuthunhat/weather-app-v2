@@ -2,7 +2,6 @@ import React, {useCallback, useState} from 'react';
 import {Box, Card, Collapse, Divider, Grid, ListItem, ListItemButton, Stack, Typography} from "@mui/material";
 import {formatUnixWithTZ, WeatherIcon} from "../../helpers/helpers.jsx";
 import {getWeatherText} from "../../consts/weatherHelpTexts.js";
-import {WiUmbrella} from "react-icons/wi";
 import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
 
 /**
