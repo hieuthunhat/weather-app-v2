@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Box, Card, Collapse, Divider, Grid, ListItem, ListItemButton, Stack, Typography} from "@mui/material";
+import {Box, Collapse, Divider, Grid, ListItem, ListItemButton, Stack, Typography} from "@mui/material";
 import {formatUnixWithTZ, WeatherIcon} from "../../helpers/helpers.jsx";
 import {getWeatherText} from "../../consts/weatherHelpTexts.js";
 import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
@@ -21,12 +21,8 @@ function DailyUnit({data, index}) {
                 backgroundColor: index % 2 === 0 ? 'action.hover' : 'transparent',
                 borderRadius: 2,
                 mb: 0.5,
-                transition: 'background-color 0.2s',
-                '&:hover': {
-                    backgroundColor: 'action.selected',
-                },
             }}>
-            <ListItemButton onClick={toogleOpen} sx={{borderRadius: 2}}>
+            <ListItemButton onClick={toogleOpen} sx={{borderRadius: 2, '&:hover': {backgroundColor: 'transparent'}}}>
                 <Stack width={'100%'}>
                     <Stack width={'100%'} paddingBlock={1}>
                         <Grid
@@ -77,7 +73,6 @@ function DailyUnit({data, index}) {
                             </Grid>
                         </Grid>
                         <Collapse in={isOpen} timeout={'auto'} unmountOnExit>
-                            <Card sx={{mt: 1, bgcolor: 'action.hover', borderRadius: 2}}>
                                 <DetailDailyCard
                                     time={formatUnixWithTZ({unix: data.date, format: 'DD-MM-YYYY'})}
                                     precipitation={data.precipitationSum}
@@ -92,7 +87,6 @@ function DailyUnit({data, index}) {
                                     precipitationProbability={data.precipitationProbability}
                                     units={data.daily_units}
                                 />
-                            </Card>
                         </Collapse>
                     </Stack>
                     <Divider/>

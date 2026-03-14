@@ -44,10 +44,9 @@ const SearchBox = () => {
                gap={2}>
             <Stack width={'100%'}>
                 <TextField
-                    label="Search location"
+                    placeholder="Search location..."
                     variant="outlined"
                     fullWidth
-                    placeholder="Ex: Hanoi, Vietnam..."
                     value={query}
                     onChange={handleQueryChange}
                     disabled={loading}
@@ -55,21 +54,17 @@ const SearchBox = () => {
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             color: 'primary.contrastText',
+                            bgcolor: 'rgba(255,255,255,0.15)',
+                            borderRadius: 2,
                             '& fieldset': {
-                                borderColor: 'primary.contrastText',
+                                borderColor: 'transparent',
                             },
                             '&:hover fieldset': {
-                                borderColor: 'primary.contrastText',
+                                borderColor: 'rgba(255,255,255,0.3)',
                             },
                             '&.Mui-focused fieldset': {
                                 borderColor: 'primary.contrastText',
                             },
-                        },
-                        '& .MuiInputLabel-root': {
-                            color: 'primary.contrastText',
-                        },
-                        '& .MuiInputLabel-root.Mui-focused': {
-                            color: 'primary.contrastText',
                         },
                         '& .MuiOutlinedInput-input::placeholder': {
                             color: 'primary.contrastText',

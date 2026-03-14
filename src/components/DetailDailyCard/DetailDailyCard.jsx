@@ -46,7 +46,7 @@ function DetailDailyCard({
                          }) {
     return (
 
-        <Stack display="flex" justifyContent="space-between" flexWrap={'wrap'} padding={1}>
+        <Stack display="flex" justifyContent="space-between" flexWrap={'wrap'} padding={1} sx={{mt: 1, bgcolor: 'action.hover', borderRadius: 2}}>
             <Stack flexDirection={'column'} alignItems={'flex-start'}>
                 <Typography variant="h6" fontWeight={600} flexWrap={'wrap'} paddingInlineStart={1}>
                     Day Details:
