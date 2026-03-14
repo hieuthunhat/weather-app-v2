@@ -9,8 +9,11 @@ import {
 import {SettingContext} from '../../contexts/SettingContext.jsx';
 import {useDispatch} from "react-redux";
 import {setLocationData} from "../../counters/counterSlice.js";
+import {useSession} from "../../hooks/useSession.js";
 
 function SuggestListBox({suggestions = [], setSuggestions}) {
+
+    const {setSession, getSession} = useSession('recentSearches')
     const {setLocation} = useContext(SettingContext);
     const dispatch = useDispatch();
 
@@ -18,6 +21,12 @@ function SuggestListBox({suggestions = [], setSuggestions}) {
         setLocation(value);
         dispatch(setLocationData(value));
         setSuggestions([]);
+        const oldSearches = getSession() || [];
+        if (oldSearches.length === 5) {
+            oldSearches.pop();
+        }
+        const newSearches = [value, ...oldSearches];
+        setSession(newSearches);
     };
 
     return (
