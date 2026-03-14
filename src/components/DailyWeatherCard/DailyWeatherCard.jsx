@@ -45,24 +45,30 @@ const DailyWeatherCard = ({data}) => {
     };
 
     return (
-        <Card>
-            <Stack padding={1}>
+        <Card sx={{borderRadius: 3, overflow: 'hidden'}}>
+            <Stack padding={2} spacing={1}>
                 <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-                    <Typography fontWeight={'bold'} fontSize={'x-large'} paddingInlineStart={2}>
+                    <Typography fontWeight={'bold'} fontSize={'x-large'} color="primary.main">
                         {forecastDays.label} forecast
                     </Typography>
                     <Select
                         size="small"
                         value={forecastDays.value}
                         onChange={handleForecastDaysChange}
-                        sx={{fontSize: 14}}
+                        sx={{
+                            fontSize: 14,
+                            borderRadius: 2,
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'secondary.main',
+                            },
+                        }}
                     >
                         {FORECAST_DAYS_OPTIONS.map(opt => (
                             <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                         ))}
                     </Select>
                 </Stack>
-                <List>
+                <List key={page} sx={{p: 0}}>
                     {paginatedData.map((forecast, index) => (
                         <DailyUnit key={index} data={forecast} index={index}/>
                     ))}

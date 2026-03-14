@@ -70,23 +70,25 @@ function CurrentWeatherCard({data}) {
                             src={`https://www.google.com/maps?q=${selectedLocation?.latitude},${selectedLocation?.longitude}&z=15&output=embed`}
                         />
 
-                        <Stack gap={2} flexDirection={'row'} flexWrap={'wrap'}
-                               alignItems={'center'} padding={1} margin={'0 auto'}>
-
+                        <Box
+                            display="flex"
+                            flexWrap="wrap"
+                            justifyContent="center"
+                            gap={2}
+                            padding={1}
+                        >
                             <UnitCard
                                 label="Feels like"
                                 dataNumber={data?.current?.apparent_temperature}
                                 unit={data?.current_units?.temperature_2m}
                                 unitKey="FEELS_LIKE_TEMPERATURE"
                             />
-
                             <UnitCard
                                 label="Wind speed"
                                 dataNumber={data?.current?.wind_speed_10m}
                                 unit={data?.current_units?.wind_speed_10m}
                                 unitKey="WIND_SPEED"
                             />
-
                             <UnitCard
                                 label="Humidity"
                                 dataNumber={data?.current?.relative_humidity_2m}
@@ -111,7 +113,7 @@ function CurrentWeatherCard({data}) {
                                 unit={data?.current_units?.wind_gusts_10m}
                                 unitKey="WIND_GUSTS"
                             />
-                        </Stack>
+                        </Box>
                     </Stack>
                 </Stack>
             </Card>

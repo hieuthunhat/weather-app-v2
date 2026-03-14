@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from 'react';
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
 import {useSelector} from "react-redux";
-import {Container, Grid, Stack} from "@mui/material";
-import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
+import {Grid, Stack} from "@mui/material";
+import HomePageSkeleton from "../components/Skeletons/HomePageSkeleton.jsx";
 import CurrentWeatherCard from "../components/CurrentWeatherCard/CurrentWeatherCard.jsx";
 import {SettingContext} from "../contexts/SettingContext.jsx";
 import {useFetch} from "../hooks/useFetch.js";
@@ -36,11 +36,12 @@ function Home() {
         }
         fetchApi();
     }, [selectedLocation])
+
     return (
         <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'} width={'100%'}
                margin={'0 auto'}>
             {selectedLocation ?
-                loading ? <LoadingSpinner/> :
+                loading ? <HomePageSkeleton/> :
                     <Grid container spacing={2} columns={16}>
                         <Grid size={{xs: 16, md: 10}}>
                             <Stack spacing={2}>

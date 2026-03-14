@@ -26,7 +26,7 @@ const ForecastHourlyCard = ({data}) => {
 
                     <LineChart
                         height={250}
-                        margin={{top: 10, bottom: 55, left: 45, right: 10}}
+                        margin={{top: 10, bottom: 55, left: 45, right: 45}}
                         series={[
                             {
                                 data: next5Hours.temperature,

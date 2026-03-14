@@ -1,7 +1,16 @@
 import React from "react";
 import {Box, Stack, Typography, Divider} from "@mui/material";
-import {WiRain, WiSnow, WiStrongWind, WiSunrise, WiSunset} from "react-icons/wi";
-import {MdWaterDrop} from "react-icons/md";
+import {
+    IoRainyOutline,
+    IoThunderstormOutline,
+    IoSnowOutline,
+    IoWaterOutline,
+    IoSunnyOutline,
+    IoCompassOutline,
+    IoUmbrellaOutline,
+    IoSpeedometerOutline
+} from "react-icons/io5";
+import {BsSunrise, BsSunset, BsWind} from "react-icons/bs";
 import {formatUnixWithTZ} from "../../helpers/helpers.jsx";
 
 function StatItem({icon, label, value}) {
@@ -25,11 +34,15 @@ function DetailDailyCard({
                              time,
                              precipitation = 0,
                              windDirection = 0,
+                             windSpeed = 0,
                              showers = 0,
                              rain = 0,
                              snowFall = 0,
                              sunSet = 0,
-                             sunRise = 0
+                             sunRise = 0,
+                             uvIndex = 0,
+                             precipitationProbability = 0,
+                             units = {}
                          }) {
     return (
 
@@ -48,47 +61,66 @@ function DetailDailyCard({
             <Stack spacing={1.2} padding={1}>
                 <Stack>
                     <StatItem
-                        icon={<MdWaterDrop/>}
+                        icon={<IoWaterOutline/>}
                         label="Precipitation"
-                        value={precipitation}
+                        value={`${precipitation} ${units?.precipitation_sum ?? ''}`}
                     />
-
                     <StatItem
-                        icon={<WiRain/>}
+                        icon={<IoRainyOutline/>}
                         label="Rain"
-                        value={rain}
+                        value={`${rain} ${units?.rain_sum ?? ''}`}
                     />
                     <StatItem
-                        icon={<WiRain/>}
+                        icon={<IoThunderstormOutline/>}
                         label="Showers"
-                        value={showers}
+                        value={`${showers} ${units?.showers_sum ?? ''}`}
                     />
-
                     <StatItem
-                        icon={<WiSnow/>}
+                        icon={<IoSnowOutline/>}
                         label="Snowfall"
-                        value={snowFall}
+                        value={`${snowFall} ${units?.snowfall_sum ?? ''}`}
                     />
                 </Stack>
                 <Divider />
                 <Stack>
                     <StatItem
-                        icon={<WiStrongWind/>}
+                        icon={<IoUmbrellaOutline/>}
+                        label="Precipitation Probability"
+                        value={`${precipitationProbability} ${units?.precipitation_probability_max ?? '%'}`}
+                    />
+                </Stack>
+                <Divider />
+                <Stack>
+                    <StatItem
+                        icon={<BsWind/>}
+                        label="Wind Speed"
+                        value={`${windSpeed} ${units?.wind_speed_10m_max ?? ''}`}
+                    />
+                    <StatItem
+                        icon={<IoCompassOutline/>}
                         label="Wind Direction"
                         value={`${windDirection}°`}
                     />
                 </Stack>
                 <Divider />
                 <Stack>
-                    <StatItem 
-                        icon={<WiSunrise/>}
-                        label={'Sunrise'} 
-                        value={formatUnixWithTZ({unix: sunRise, format: 'h:mm A'})} 
+                    <StatItem
+                        icon={<IoSunnyOutline/>}
+                        label="UV Index"
+                        value={uvIndex}
                     />
-                    <StatItem 
-                        icon={<WiSunset/>}
-                        label={'Sunset'} 
-                        value={formatUnixWithTZ({unix: sunSet, format: 'h:mm A'})} 
+                </Stack>
+                <Divider />
+                <Stack>
+                    <StatItem
+                        icon={<BsSunrise/>}
+                        label="Sunrise"
+                        value={formatUnixWithTZ({unix: sunRise, format: 'h:mm A'})}
+                    />
+                    <StatItem
+                        icon={<BsSunset/>}
+                        label="Sunset"
+                        value={formatUnixWithTZ({unix: sunSet, format: 'h:mm A'})}
                     />
                 </Stack>
             </Stack>

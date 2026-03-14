@@ -5,7 +5,7 @@ import {useFetch} from "../hooks/useFetch.js";
 import {buildForecastURL, buildHistoricalURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL, HISTORICAL_URL} from "../consts/settingConstants.js";
 import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
-import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
+import AnalyticsPageSkeleton from "../components/Skeletons/AnalyticsPageSkeleton.jsx";
 import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
 import moment from "moment-timezone";
@@ -135,7 +135,7 @@ function Analytics() {
         <Stack justifyContent={'center'} gap={2} paddingInline={2}>
             {selectedLocation ?
                 (loading || historicalLoading) ?
-                    <LoadingSpinner/>
+                    <AnalyticsPageSkeleton/>
                     :
                     <Box>
                         <Box paddingBlock={2}>
