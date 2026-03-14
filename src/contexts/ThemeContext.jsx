@@ -8,9 +8,9 @@ export const ThemeContext = createContext({});
 const lightTheme = createTheme({
     palette: {
         mode: 'light',
-        primary: {main: '#0288D1'},
-        secondary: {main: '#4FC3F7'},
-        background: {default: '#F5F7FA', paper: '#FFFFFF'},
+        primary: {main: '#00796B'},
+        secondary: {main: '#4DB6AC'},
+        background: {default: '#F0FBF8', paper: '#FFFFFF'},
         text: {primary: '#1A2138', secondary: '#5F6B7A'},
     },
 });
@@ -18,8 +18,8 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
-        primary: {main: '#4FC3F7'},
-        secondary: {main: '#81D4FA'},
+        primary: {main: '#4DB6AC'},
+        secondary: {main: '#80CBC4'},
         background: {default: '#0D1117', paper: '#161B22'},
         text: {primary: '#E6EDF3', secondary: '#8B949E'},
     },

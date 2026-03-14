@@ -44,8 +44,14 @@ export const WIND_SPEED_MAX = 'wind_speed_10m_max';
 export const WIND_GUSTS_MAX = 'wind_gusts_10m_max';
 export const DOMINANT_WIND_DIRECTION = 'wind_direction_10m_dominant';
 export const UV_INDEX_MAX = 'uv_index_max';
+export const PRECIPITATION_PROBABILITY_MAX = 'precipitation_probability_max';
 
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
+
+export const FORECAST_DAYS_OPTIONS = [
+    { label: '7 days', value: 7 },
+    { label: '16 days', value: 16 },
+];
 export const HISTORICAL_URL = 'https://archive-api.open-meteo.com/v1/archive';
 export const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'

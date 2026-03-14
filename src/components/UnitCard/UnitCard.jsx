@@ -7,7 +7,7 @@ function UnitCard({label, dataNumber, unit, unitKey}) {
     const theme = useTheme();
 
     return (
-        <Box width={'9rem'} height={'3rem'} boxShadow={'none'}>
+        <Box width={150} boxShadow={'none'}>
             <Box padding={'0.5rem'} bgcolor={'action.hover'} borderRadius={'10px'} >
                 <Stack direction="row" spacing={1} alignItems="center">
                     {Icon && <Icon size={28} color={theme.palette.secondary.main}/>}
