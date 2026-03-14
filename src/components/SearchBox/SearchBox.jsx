@@ -1,21 +1,21 @@
-import {
-    Button,
-    Stack,
-    TextField
-} from '@mui/material';
+import {Button, Stack, TextField, Tooltip} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
 import {CiLocationOn} from "react-icons/ci";
 import {useFetch} from "../../hooks/useFetch.js";
+import {useDispatch} from "react-redux";
+import {setLocationData} from "../../counters/counterSlice.js";
 
 const SearchBox = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+
+
+    const dispatch = useDispatch();
     const {
         fetchApi, loading
     } = useFetch({url: '', initLoad: false, successfullyFetch: data => {
-            console.log(data)
             setSuggestions(data?.results || [])
         }})
 
@@ -39,9 +39,25 @@ const SearchBox = () => {
         setQuery(e.target.value);
     };
 
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function success(position) {
+        dispatch(setLocationData({latitude: position.coords.latitude, longitude: position.coords.longitude}));
+    }
+
+    function error() {
+        alert("Sorry, no position available.");
+    }
+
     return (
         <Stack display={'flex'} flexDirection={'row'} width={{xs: '80%', md: '40%'}} sx={{position: 'relative'}}
-               gap={2}>
+               gap={2} paddingInlineEnd={2}>
             <Stack width={'100%'}>
                 <TextField
                     placeholder="Search location..."
@@ -73,7 +89,9 @@ const SearchBox = () => {
                     }}
                 />
             </Stack>
-            <Button sx={{color: 'primary.contrastText'}}><CiLocationOn size={30}/></Button>
+            <Tooltip title={'Use your location'}>
+                <Button onClick={getLocation} sx={{color: 'primary.contrastText'}}><CiLocationOn size={30}/></Button>
+            </Tooltip>
             {query.length > 0 && suggestions.length > 0 && (
                 <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
         </Stack>
