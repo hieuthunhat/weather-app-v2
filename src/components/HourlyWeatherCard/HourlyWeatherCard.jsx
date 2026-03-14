@@ -23,8 +23,6 @@ const HourlyWeatherCard = ({ data }) => {
 
     const time = hourly.time;
 
-    console.log('hourly', hourly);
-
     return (
         <Grid container spacing={3}>
             {/* Temperature */}

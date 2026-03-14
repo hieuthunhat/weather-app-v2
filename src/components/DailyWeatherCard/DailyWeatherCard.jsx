@@ -1,4 +1,4 @@
-import {Card, List, MenuItem, Select, Stack, Typography} from '@mui/material'
+import {Card, List, MenuItem, Pagination, Select, Stack, Typography} from '@mui/material'
 import React, {useMemo, useState} from 'react'
 import DailyUnit from "../DailyUnit/DailyUnit.jsx";
 import {FORECAST_DAYS_OPTIONS} from "../../consts/settingConstants.js";
@@ -7,6 +7,8 @@ const DailyWeatherCard = ({data}) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
     const [forecastDays, setForecastDays] = useState(FORECAST_DAYS_OPTIONS[0]);
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 7;
 
     const allForecastData = useMemo(() => daily?.time?.map((date, index) => ({
         date,
@@ -31,17 +33,28 @@ const DailyWeatherCard = ({data}) => {
         [allForecastData, forecastDays.value]
     );
 
+    const pageCount = Math.ceil(displayedForecastData.length / itemsPerPage);
+    const paginatedData = displayedForecastData.slice(
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+    );
+
+    const handleForecastDaysChange = (e) => {
+        setForecastDays(FORECAST_DAYS_OPTIONS.find(opt => opt.value === e.target.value));
+        setPage(1);
+    };
+
     return (
         <Card>
             <Stack padding={1}>
                 <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-                    <Typography fontWeight={'bold'} fontSize={'x-large'}>
+                    <Typography fontWeight={'bold'} fontSize={'x-large'} paddingInlineStart={2}>
                         {forecastDays.label} forecast
                     </Typography>
                     <Select
                         size="small"
                         value={forecastDays.value}
-                        onChange={(e) => setForecastDays(FORECAST_DAYS_OPTIONS.find(opt => opt.value === e.target.value))}
+                        onChange={handleForecastDaysChange}
                         sx={{fontSize: 14}}
                     >
                         {FORECAST_DAYS_OPTIONS.map(opt => (
@@ -50,10 +63,21 @@ const DailyWeatherCard = ({data}) => {
                     </Select>
                 </Stack>
                 <List>
-                    {displayedForecastData.map((forecast, index) => (
+                    {paginatedData.map((forecast, index) => (
                         <DailyUnit key={index} data={forecast} index={index}/>
                     ))}
                 </List>
+                {pageCount > 1 && (
+                    <Stack alignItems={'center'} paddingBlock={1}>
+                        <Pagination
+                            count={pageCount}
+                            page={page}
+                            onChange={(_e, value) => setPage(value)}
+                            color="primary"
+                            size="small"
+                        />
+                    </Stack>
+                )}
             </Stack>
         </Card>
     )

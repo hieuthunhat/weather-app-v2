@@ -132,28 +132,30 @@ function Analytics() {
     }, [mergedHourly, mergedUnits, weatherData, selectedDate]);
 
     return (
-        <Stack justifyContent={'center'} gap={2}>
+        <Stack justifyContent={'center'} gap={2} paddingInline={2}>
             {selectedLocation ?
                 (loading || historicalLoading) ?
                     <LoadingSpinner/>
                     :
                     <Box>
-                        <FormControl size={'medium'} sx={{ minWidth: 200 }}>
-                            <InputLabel id="date-select-label">Date</InputLabel>
-                            <Select
-                                labelId="date-select-label"
-                                id="date-select"
-                                value={selectedDate}
-                                label="Date"
-                                onChange={(e) => setSelectedDate(e.target.value)}
-                            >
-                                {availableDates.map((date) => (
-                                    <MenuItem key={date.value} value={date.value}>
-                                        {date.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Box paddingBlock={2}>
+                            <FormControl size={'medium'} sx={{minWidth: 200}}>
+                                <InputLabel id="date-select-label">Date</InputLabel>
+                                <Select
+                                    labelId="date-select-label"
+                                    id="date-select"
+                                    value={selectedDate}
+                                    label="Date"
+                                    onChange={(e) => setSelectedDate(e.target.value)}
+                                >
+                                    {availableDates.map((date) => (
+                                        <MenuItem key={date.value} value={date.value}>
+                                            {date.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
                         <HourlyWeatherCard data={filteredData}/>
                     </Box>
                 :
