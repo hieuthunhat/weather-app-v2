@@ -1,28 +1,16 @@
-import {Box, Card, Collapse, Divider, Grid, List, ListItem, ListItemButton, Stack, Typography} from '@mui/material'
-import React, {useCallback, useState} from 'react'
-import {formatUnixWithTZ, WeatherIcon} from '../../helpers/helpers.jsx';
-import {getWeatherText} from '../../consts/weatherHelpTexts';
-import {
-    WiRain,
-    WiShowers,
-    WiSnow,
-    WiUmbrella,
-} from "react-icons/wi";
-import DetailDailyCard from "../DetailDailyCard/DetailDailyCard.jsx";
+import {Card, List, MenuItem, Pagination, Select, Stack, Typography} from '@mui/material'
+import React, {useMemo, useState} from 'react'
 import DailyUnit from "../DailyUnit/DailyUnit.jsx";
+import {FORECAST_DAYS_OPTIONS} from "../../consts/settingConstants.js";
 
-
-/**
- * Date, Min, Max
- * Dropdown
- * @param {*} param0
- * @returns
- */
-const DailyWeatherCard = ({data, id}) => {
+const DailyWeatherCard = ({data}) => {
     const daily = data?.daily;
     const dailyUnits = data?.daily_units;
+    const [forecastDays, setForecastDays] = useState(FORECAST_DAYS_OPTIONS[0]);
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 7;
 
-    const dailyForecastData = daily?.time?.map((date, index) => ({
+    const allForecastData = useMemo(() => daily?.time?.map((date, index) => ({
         date,
         weatherCode: daily.weather_code?.[index],
         temperature_2m_max: daily.temperature_2m_max?.[index],
@@ -30,26 +18,73 @@ const DailyWeatherCard = ({data, id}) => {
         sunrise: daily.sunrise?.[index],
         sunset: daily.sunset?.[index],
         precipitationSum: daily.precipitation_sum?.[index],
+        precipitationProbability: daily?.precipitation_probability_max?.[index],
         rainSum: daily.rain_sum?.[index],
         showersSum: daily.showers_sum?.[index],
         snowfallSum: daily.snowfall_sum?.[index],
         uvIndex: daily.uv_index_max?.[index],
         windDirection: daily.wind_direction_10m_dominant?.[index],
         windSpeed: daily.wind_speed_10m_max?.[index],
-        daily_units: dailyUnits,
-    }));
+        daily_units: dailyUnits
+    })) ?? [], [daily, dailyUnits]);
 
-    console.log(dailyForecastData)
+    const displayedForecastData = useMemo(
+        () => allForecastData.slice(0, forecastDays.value),
+        [allForecastData, forecastDays.value]
+    );
+
+    const pageCount = Math.ceil(displayedForecastData.length / itemsPerPage);
+    const paginatedData = displayedForecastData.slice(
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+    );
+
+    const handleForecastDaysChange = (e) => {
+        setForecastDays(FORECAST_DAYS_OPTIONS.find(opt => opt.value === e.target.value));
+        setPage(1);
+    };
 
     return (
-        <Card>
-            <List>
-                {dailyForecastData?.map((forecast, index) =>
-                    (
-                        <DailyUnit data={forecast} index={index} />
-                    )
+        <Card sx={{borderRadius: 3, overflow: 'hidden'}}>
+            <Stack padding={2} spacing={1}>
+                <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                    <Typography fontWeight={'bold'} fontSize={'x-large'} color="primary.main">
+                        {forecastDays.label} forecast
+                    </Typography>
+                    <Select
+                        size="small"
+                        value={forecastDays.value}
+                        onChange={handleForecastDaysChange}
+                        sx={{
+                            fontSize: 14,
+                            borderRadius: 2,
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'secondary.main',
+                            },
+                        }}
+                    >
+                        {FORECAST_DAYS_OPTIONS.map(opt => (
+                            <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                        ))}
+                    </Select>
+                </Stack>
+                <List key={page} sx={{p: 0}}>
+                    {paginatedData.map((forecast, index) => (
+                        <DailyUnit key={index} data={forecast} index={index}/>
+                    ))}
+                </List>
+                {pageCount > 1 && (
+                    <Stack alignItems={'center'} paddingBlock={1}>
+                        <Pagination
+                            count={pageCount}
+                            page={page}
+                            onChange={(_e, value) => setPage(value)}
+                            color="primary"
+                            size="small"
+                        />
+                    </Stack>
                 )}
-            </List>
+            </Stack>
         </Card>
     )
 }

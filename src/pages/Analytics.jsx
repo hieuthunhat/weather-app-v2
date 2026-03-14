@@ -5,7 +5,7 @@ import {useFetch} from "../hooks/useFetch.js";
 import {buildForecastURL, buildHistoricalURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL, HISTORICAL_URL} from "../consts/settingConstants.js";
 import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
-import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.jsx";
+import AnalyticsPageSkeleton from "../components/Skeletons/AnalyticsPageSkeleton.jsx";
 import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
 import moment from "moment-timezone";
@@ -58,6 +58,10 @@ function Analytics() {
         if (!historical?.time) return forecast;
         if (!forecast?.time) return historical;
 
+        // Find where forecast starts that isn't already in historical
+        const historicalTimeSet = new Set(historical.time);
+        const forecastStartIdx = forecast.time.findIndex(t => !historicalTimeSet.has(t));
+
         const allKeys = new Set([
             ...Object.keys(historical),
             ...Object.keys(forecast),
@@ -65,9 +69,12 @@ function Analytics() {
 
         const merged = {};
         for (const key of allKeys) {
+            const hist = historical[key] ?? [];
+            const fore = forecast[key] ?? [];
+            // Append only the non-overlapping forecast portion
             merged[key] = [
-                ...(historical[key] ?? []),
-                ...(forecast[key] ?? []),
+                ...hist,
+                ...(forecastStartIdx >= 0 ? fore.slice(forecastStartIdx) : []),
             ];
         }
         return merged;
@@ -125,28 +132,30 @@ function Analytics() {
     }, [mergedHourly, mergedUnits, weatherData, selectedDate]);
 
     return (
-        <Stack justifyContent={'center'} gap={2}>
+        <Stack justifyContent={'center'} gap={2} paddingInline={2}>
             {selectedLocation ?
                 (loading || historicalLoading) ?
-                    <LoadingSpinner/>
+                    <AnalyticsPageSkeleton/>
                     :
                     <Box>
-                        <FormControl size={'medium'} sx={{ minWidth: 200 }}>
-                            <InputLabel id="date-select-label">Date</InputLabel>
-                            <Select
-                                labelId="date-select-label"
-                                id="date-select"
-                                value={selectedDate}
-                                label="Date"
-                                onChange={(e) => setSelectedDate(e.target.value)}
-                            >
-                                {availableDates.map((date) => (
-                                    <MenuItem key={date.value} value={date.value}>
-                                        {date.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Box paddingBlock={2}>
+                            <FormControl size={'medium'} sx={{minWidth: 200}}>
+                                <InputLabel id="date-select-label">Date</InputLabel>
+                                <Select
+                                    labelId="date-select-label"
+                                    id="date-select"
+                                    value={selectedDate}
+                                    label="Date"
+                                    onChange={(e) => setSelectedDate(e.target.value)}
+                                >
+                                    {availableDates.map((date) => (
+                                        <MenuItem key={date.value} value={date.value}>
+                                            {date.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
                         <HourlyWeatherCard data={filteredData}/>
                     </Box>
                 :

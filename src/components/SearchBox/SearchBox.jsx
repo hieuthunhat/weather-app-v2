@@ -42,17 +42,38 @@ const SearchBox = () => {
     return (
         <Stack display={'flex'} flexDirection={'row'} width={{xs: '80%', md: '40%'}} sx={{position: 'relative'}}
                gap={2}>
-            <TextField
-                label="Search location"
-                variant="outlined"
-                fullWidth
-                placeholder="Ex: Hanoi, Vietnam..."
-                value={query}
-                onChange={handleQueryChange}
-                disabled={loading}
-                size={'small'}
-            />
-            <Button><CiLocationOn size={30}/></Button>
+            <Stack width={'100%'}>
+                <TextField
+                    placeholder="Search location..."
+                    variant="outlined"
+                    fullWidth
+                    value={query}
+                    onChange={handleQueryChange}
+                    disabled={loading}
+                    size={'small'}
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            color: 'primary.contrastText',
+                            bgcolor: 'rgba(255,255,255,0.15)',
+                            borderRadius: 2,
+                            '& fieldset': {
+                                borderColor: 'transparent',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: 'rgba(255,255,255,0.3)',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: 'primary.contrastText',
+                            },
+                        },
+                        '& .MuiOutlinedInput-input::placeholder': {
+                            color: 'primary.contrastText',
+                            opacity: 0.7,
+                        },
+                    }}
+                />
+            </Stack>
+            <Button sx={{color: 'primary.contrastText'}}><CiLocationOn size={30}/></Button>
             {query.length > 0 && suggestions.length > 0 && (
                 <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
         </Stack>
