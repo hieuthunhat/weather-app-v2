@@ -58,6 +58,10 @@ function Analytics() {
         if (!historical?.time) return forecast;
         if (!forecast?.time) return historical;
 
+        // Find where forecast starts that isn't already in historical
+        const historicalTimeSet = new Set(historical.time);
+        const forecastStartIdx = forecast.time.findIndex(t => !historicalTimeSet.has(t));
+
         const allKeys = new Set([
             ...Object.keys(historical),
             ...Object.keys(forecast),
@@ -65,9 +69,12 @@ function Analytics() {
 
         const merged = {};
         for (const key of allKeys) {
+            const hist = historical[key] ?? [];
+            const fore = forecast[key] ?? [];
+            // Append only the non-overlapping forecast portion
             merged[key] = [
-                ...(historical[key] ?? []),
-                ...(forecast[key] ?? []),
+                ...hist,
+                ...(forecastStartIdx >= 0 ? fore.slice(forecastStartIdx) : []),
             ];
         }
         return merged;
