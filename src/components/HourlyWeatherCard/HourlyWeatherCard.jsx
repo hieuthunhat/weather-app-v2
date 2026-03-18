@@ -26,7 +26,7 @@ const HourlyWeatherCard = ({ data }) => {
     return (
         <Grid container spacing={3}>
             {/* Temperature */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -54,7 +54,7 @@ const HourlyWeatherCard = ({ data }) => {
             </Grid>
 
             {/* Wind */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -82,7 +82,7 @@ const HourlyWeatherCard = ({ data }) => {
             </Grid>
 
             {/* Precipitation */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -120,7 +120,7 @@ const HourlyWeatherCard = ({ data }) => {
             </Grid>
 
             {/* Humidity & Cloud Cover */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
