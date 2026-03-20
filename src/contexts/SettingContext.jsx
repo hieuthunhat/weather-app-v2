@@ -32,6 +32,7 @@ import {
 } from "../consts/settingConstants.js";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {useSession} from "../hooks/useSession.js";
 
 export const SettingContext = createContext();
 
@@ -50,7 +51,7 @@ export const SettingProvider = ({children}) => {
         hourly: [HOURLY_TEMPERATURE, HOURLY_RELATIVE_HUMIDITY, HOURLY_FEELS_LIKE_TEMPERATURE, HOURLY_WIND_SPEED, HOURLY_PRECIPITATION, HOURLY_RAIN, HOURLY_SHOWERS, HOURLY_SNOWFALL, HOURLY_WIND_DIRECTION, HOURLY_WIND_GUSTS, HOURLY_CLOUD_COVER, WEATHER_CODE]
     })
     const [hideElements, setHideElements] = useState([]);
-    const [unitSettings, setUnitSettings] = useStorage({
+    const [unitSettings, setUnitSettings, deleteUnitSettings] = useStorage({
         key: 'unitSettings',
         initialValue: {
             temperature_unit: 'celsius',
@@ -82,7 +83,7 @@ export const SettingProvider = ({children}) => {
         }
     };
 
-    const [componentVisibility, setComponentVisibility] = useStorage({
+    const [componentVisibility, setComponentVisibility, deleteComponentVisibility] = useStorage({
         key: 'componentVisibility',
         initialValue: defaultVisibility
     });
@@ -101,10 +102,17 @@ export const SettingProvider = ({children}) => {
         setOnboardingSkipped(true);
     };
 
+    const {deleteSession} = useSession('recentSearches')
+    const [onboarding, setOnboarding, deleteOnboarding] = useStorage({key: 'onboarding'})
+
     const resetOnboarding = () => {
         setOnboardingSkipped(false);
         setLastSearchCookie(null);
         window.location.href = "/"
+        deleteSession();
+        deleteComponentVisibility();
+        deleteUnitSettings();
+        deleteOnboarding();
     };
 
     return <SettingContext.Provider value={{

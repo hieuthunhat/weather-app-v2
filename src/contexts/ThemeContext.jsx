@@ -6,23 +6,8 @@ import {DARK_THEME, LIGHT_THEME} from "../consts/settingConstants.js";
 export const ThemeContext = createContext({});
 
 export const THEME_TEMPLATES = {
-    teal: {
-        name: 'Teal (Default)',
-        light: {
-            primary: '#00796B',
-            secondary: '#4DB6AC',
-            background: '#F0FBF8',
-            paper: '#FFFFFF',
-        },
-        dark: {
-            primary: '#4DB6AC',
-            secondary: '#80CBC4',
-            background: '#0D1117',
-            paper: '#161B22',
-        }
-    },
     ocean: {
-        name: 'Ocean Blue',
+        name: 'Ocean Blue (Default)',
         light: {
             primary: '#1565C0',
             secondary: '#42A5F5',
@@ -34,6 +19,21 @@ export const THEME_TEMPLATES = {
             secondary: '#90CAF9',
             background: '#0A1929',
             paper: '#132F4C',
+        }
+    },
+    teal: {
+        name: 'Teal',
+        light: {
+            primary: '#00796B',
+            secondary: '#4DB6AC',
+            background: '#F0FBF8',
+            paper: '#FFFFFF',
+        },
+        dark: {
+            primary: '#4DB6AC',
+            secondary: '#80CBC4',
+            background: '#0D1117',
+            paper: '#161B22',
         }
     },
     sunset: {
@@ -114,7 +114,7 @@ function buildMuiTheme(mode, colors) {
 
 export const ThemeProvider = ({children}) => {
     const [storedTheme, setStoredTheme] = useStorage({key: 'THEME_CONTEXT'});
-    const [storedTemplate, setStoredTemplate] = useStorage({key: 'THEME_TEMPLATE', initialValue: 'teal'});
+    const [storedTemplate, setStoredTemplate] = useStorage({key: 'THEME_TEMPLATE', initialValue: 'ocean'});
     const [storedCustomColors, setStoredCustomColors] = useStorage({
         key: 'THEME_CUSTOM_COLORS',
         initialValue: THEME_TEMPLATES.custom
