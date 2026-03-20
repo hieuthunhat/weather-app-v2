@@ -22,7 +22,7 @@ function StatItem({icon, label, value}) {
                     {label}
                 </Typography>
             </Stack>
-            <Box width={'70px'}>
+            <Box >
                 <Typography fontWeight={600}>{value}</Typography>
             </Box>
         </Stack>

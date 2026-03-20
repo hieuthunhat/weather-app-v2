@@ -1,4 +1,5 @@
 import {createContext, useState} from "react";
+import {useCookie} from "../hooks/useCookie.js";
 import {
     CLOUD_COVER,
     DOMINANT_WIND_DIRECTION,
@@ -47,6 +48,13 @@ export const SettingProvider = ({children}) => {
         hourly: [HOURLY_TEMPERATURE, HOURLY_RELATIVE_HUMIDITY, HOURLY_FEELS_LIKE_TEMPERATURE, HOURLY_WIND_SPEED, HOURLY_PRECIPITATION, HOURLY_RAIN, HOURLY_SHOWERS, HOURLY_SNOWFALL, HOURLY_WIND_DIRECTION, HOURLY_WIND_GUSTS, HOURLY_CLOUD_COVER, WEATHER_CODE]
     })
     const [hideElements, setHideElements] = useState([]);
+    const [lastSearch, setLastSearchCookie] = useCookie({key: 'lastSearch', initialValue: null, maxAgeDays: 1});
+    const [onboardingSkipped, setOnboardingSkipped] = useState(false);
+    const onboardingDone = onboardingSkipped || lastSearch !== null;
+
+    const completeOnboarding = () => {
+        setOnboardingSkipped(true);
+    };
 
     return <SettingContext.Provider value={{
         isOpenDrawer,
@@ -60,7 +68,11 @@ export const SettingProvider = ({children}) => {
         hideElements,
         setHideElements,
         selectedHistoricalFields,
-        setSelectedHistoricalFields
+        setSelectedHistoricalFields,
+        onboardingDone,
+        completeOnboarding,
+        lastSearch,
+        setLastSearchCookie
     }}>
         {children}
     </SettingContext.Provider>

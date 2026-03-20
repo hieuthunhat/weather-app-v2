@@ -15,7 +15,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {MdDarkMode, MdLightMode, MdHistory} from "react-icons/md";
+import {MdDarkMode, MdHistory, MdLightMode} from "react-icons/md";
 import {IoLocationOutline} from "react-icons/io5";
 import {useSession} from "../../hooks/useSession.js";
 import {setLocationData} from "../../counters/counterSlice.js";
@@ -29,9 +29,10 @@ export const DrawerList = () => {
     const navigate = useNavigate();
     const isDark = theme === DARK_THEME;
     const {getSession} = useSession('recentSearches')
-    const showRecentSearchesSession = (
-        getSession()
-    )
+    const showRecentSearchesSession = getSession()?.reduce((acc, item) => {
+        if (!acc.some(i => i.name === item.name)) acc.push(item);
+        return acc;
+    }, []) ?? [];
 
     const handleClickLocation = (value) => {
         setLocation(value);
