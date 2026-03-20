@@ -19,14 +19,14 @@ const ForecastHourlyCard = ({data}) => {
 
     return (
         <Card variant="outlined" sx={{borderRadius: 2}}>
-            <Stack padding={1}>
+            <Stack>
                 <CardContent sx={{p: 2, pb: '8px !important'}}>
                     <Typography variant="subtitle2" fontWeight={600} mb={1}>
-                        Next 5 hours </Typography>
+                        Next 5 hours forecast </Typography>
 
                     <LineChart
                         height={250}
-                        margin={{top: 10, bottom: 55, left: 45, right: 45}}
+                        // margin={{top: 10, bottom: 55, left: 45, right: 45}}
                         series={[
                             {
                                 data: next5Hours.temperature,
