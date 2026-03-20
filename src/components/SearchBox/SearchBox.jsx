@@ -1,17 +1,20 @@
 import {Button, Stack, TextField, Tooltip} from '@mui/material';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce.js';
 import SuggestListBox from "./SuggestListBox.jsx";
 import {CiLocationOn} from "react-icons/ci";
 import {useFetch} from "../../hooks/useFetch.js";
 import {useDispatch} from "react-redux";
 import {setLocationData} from "../../counters/counterSlice.js";
+import {useGeolocation} from "../../hooks/useGeolocation.jsx";
+import {SettingContext} from "../../contexts/SettingContext.jsx";
 
 const SearchBox = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [error, setError] = useState(null);
 
-
+    const {setLocation, setLastSearchCookie} = useContext(SettingContext);
     const dispatch = useDispatch();
     const {
         fetchApi, loading
@@ -39,21 +42,41 @@ const SearchBox = () => {
         setQuery(e.target.value);
     };
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success, error);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+    const handleGeolocationSuccess = async (position) => {
+        const {latitude, longitude} = position.coords;
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`
+            );
+            const data = await res.json();
+            const addr = data?.address;
+            const cityName = addr?.city || addr?.town || addr?.village || addr?.county || data?.name || '';
+            const locationName = [addr?.state, addr?.country].filter(Boolean).join(', ');
+            const locationData = {
+                name: cityName || `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`,
+                locationName,
+                latitude,
+                longitude
+            };
+            dispatch(setLocationData(locationData));
+            setLocation(locationData);
+            setLastSearchCookie(locationData);
+        } catch {
+            const locationData = {
+                name: `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`,
+                locationName: '',
+                latitude,
+                longitude
+            };
+            dispatch(setLocationData(locationData));
+            setLocation(locationData);
+            setLastSearchCookie(locationData);
         }
-    }
+    };
 
-    function success(position) {
-        dispatch(setLocationData({latitude: position.coords.latitude, longitude: position.coords.longitude}));
-    }
-
-    function error() {
-        alert("Sorry, no position available.");
-    }
+    const {getLocation, ToastComponent} = useGeolocation({
+        successCallback: handleGeolocationSuccess
+    })
 
     return (
         <Stack display={'flex'} flexDirection={'row'} width={{xs: '80%', md: '40%'}} sx={{position: 'relative'}}
@@ -94,6 +117,7 @@ const SearchBox = () => {
             </Tooltip>
             {query.length > 0 && suggestions.length > 0 && (
                 <SuggestListBox suggestions={suggestions} setSuggestions={setSuggestions}/>)}
+            {ToastComponent}
         </Stack>
 
     )

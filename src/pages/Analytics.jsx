@@ -1,44 +1,38 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {SettingContext} from "../contexts/SettingContext.jsx";
 import {useFetch} from "../hooks/useFetch.js";
-import {buildForecastURL, buildHistoricalURL} from "../helpers/helpers.jsx";
-import {FORECAST_URL, HISTORICAL_URL} from "../consts/settingConstants.js";
-import {Box, FormControl, InputLabel, MenuItem, Select, Stack} from "@mui/material";
+import {buildForecastURL, buildHistoricalURL, buildAirQualityURL} from "../helpers/helpers.jsx";
+import {FORECAST_URL, HISTORICAL_URL, AIR_QUALITY_HOURLY_FIELDS} from "../consts/settingConstants.js";
+import {Box, FormControl, InputLabel, MenuItem, Select, Stack, Typography, useMediaQuery} from "@mui/material";
 import AnalyticsPageSkeleton from "../components/Skeletons/AnalyticsPageSkeleton.jsx";
 import HourlyWeatherCard from "../components/HourlyWeatherCard/HourlyWeatherCard.jsx";
+import AirQualityCard from "../components/AirQualityCard/AirQualityCard.jsx";
 import EmptyState from "../components/EmptyState/EmptyState.jsx";
 import moment from "moment-timezone";
+import MediaModal from "../components/MediaModal/MediaModal.jsx";
 
 function Analytics() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, selectedHistoricalFields} = useContext(SettingContext);
-    // setSelectedFields({...selectedFields, current: []})
+    const {selectedFields, selectedHistoricalFields, componentVisibility, unitSettings} = useContext(SettingContext);
+    const matches = useMediaQuery('(max-width:650px)');
 
     const {data: weatherData, loading, fetchApi} = useFetch({
-        url: buildForecastURL({
-            url: FORECAST_URL,
-            obj: selectedFields,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude
-        }),
+        url: null,
         initLoad: false
     });
 
     const today = moment().format('YYYY-MM-DD');
-
-// 7 days earlier
     const sevenDaysAgo = moment().subtract(7, 'days').format('YYYY-MM-DD');
 
     const {data: historicalData, loading: historicalLoading, fetchApi: fetchHistoricalApi} = useFetch({
-        url: buildHistoricalURL({
-            url: HISTORICAL_URL,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude,
-            startDate: sevenDaysAgo,
-            endDate: today,
-            obj: selectedHistoricalFields,
-        })
+        url: null,
+        initLoad: false
+    })
+
+    const {data: airQualityData, loading: airQualityLoading, fetchApi: fetchAirQualityApi} = useFetch({
+        url: null,
+        initLoad: false
     })
 
     const [selectedDate, setSelectedDate] = useState('');
@@ -47,9 +41,31 @@ function Analytics() {
         if (!selectedLocation) {
             return;
         }
-        fetchApi();
-        fetchHistoricalApi();
-    }, [selectedLocation])
+        const forecastUrl = buildForecastURL({
+            url: FORECAST_URL,
+            obj: selectedFields,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            units: unitSettings
+        });
+        const historicalUrl = buildHistoricalURL({
+            url: HISTORICAL_URL,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            startDate: sevenDaysAgo,
+            endDate: today,
+            obj: selectedHistoricalFields,
+            units: unitSettings,
+        });
+        const airQualityUrl = buildAirQualityURL({
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            hourlyFields: AIR_QUALITY_HOURLY_FIELDS,
+        });
+        fetchApi(forecastUrl);
+        fetchHistoricalApi(historicalUrl);
+        fetchAirQualityApi(airQualityUrl);
+    }, [selectedLocation, unitSettings])
 
     const mergedHourly = useMemo(() => {
         const historical = historicalData?.hourly;
@@ -71,7 +87,6 @@ function Analytics() {
         for (const key of allKeys) {
             const hist = historical[key] ?? [];
             const fore = forecast[key] ?? [];
-            // Append only the non-overlapping forecast portion
             merged[key] = [
                 ...hist,
                 ...(forecastStartIdx >= 0 ? fore.slice(forecastStartIdx) : []),
@@ -131,32 +146,58 @@ function Analytics() {
         };
     }, [mergedHourly, mergedUnits, weatherData, selectedDate]);
 
+    const filteredAirQualityData = useMemo(() => {
+        const hourly = airQualityData?.hourly;
+        if (!hourly?.time || !selectedDate) return airQualityData;
+
+        const indices = [];
+        hourly.time.forEach((unix, index) => {
+            if (moment.unix(unix).format('YYYY-MM-DD') === selectedDate) {
+                indices.push(index);
+            }
+        });
+
+        const filteredHourly = {};
+        for (const [key, values] of Object.entries(hourly)) {
+            filteredHourly[key] = indices.map(i => values[i]);
+        }
+
+        return { ...airQualityData, hourly: filteredHourly };
+    }, [airQualityData, selectedDate]);
+
     return (
         <Stack justifyContent={'center'} gap={2} paddingInline={2}>
             {selectedLocation ?
-                (loading || historicalLoading) ?
+                (loading || historicalLoading || airQualityLoading) ?
                     <AnalyticsPageSkeleton/>
                     :
                     <Box>
-                        <Box paddingBlock={2}>
-                            <FormControl size={'medium'} sx={{minWidth: 200}}>
-                                <InputLabel id="date-select-label">Date</InputLabel>
-                                <Select
-                                    labelId="date-select-label"
-                                    id="date-select"
-                                    value={selectedDate}
-                                    label="Date"
-                                    onChange={(e) => setSelectedDate(e.target.value)}
-                                >
-                                    {availableDates.map((date) => (
-                                        <MenuItem key={date.value} value={date.value}>
-                                            {date.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Box>
-                        <HourlyWeatherCard data={filteredData}/>
+                        {matches && <MediaModal />}
+                        <Stack paddingBlock={2} flexDirection={'row'} alignItems={'center'} gap={2} flexWrap={'wrap'} paddingInlineStart={2}>
+                            <Typography variant={'span'}>Showing data on</Typography>
+                            <Box>
+                                <FormControl size={'medium'} sx={{minWidth: 200}}>
+                                    <InputLabel id="date-select-label">Date</InputLabel>
+                                    <Select
+                                        labelId="date-select-label"
+                                        id="date-select"
+                                        value={selectedDate}
+                                        label="Date"
+                                        onChange={(e) => setSelectedDate(e.target.value)}
+                                    >
+                                        {availableDates.map((date) => (
+                                            <MenuItem key={date.value} value={date.value}>
+                                                {date.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            in
+                            <Typography variant={'span'} fontWeight={'bold'}>{selectedLocation?.name ? `${selectedLocation.name}, ${selectedLocation.locationName}` : `${selectedLocation.latitude?.toFixed(3)}, ${selectedLocation.longitude?.toFixed(3)}`}</Typography>
+                        </Stack>
+                        <HourlyWeatherCard data={filteredData} visibility={componentVisibility.analytics}/>
+                        <AirQualityCard data={filteredAirQualityData} visibility={componentVisibility.analytics}/>
                     </Box>
                 :
                 <EmptyState/>

@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import {parseCookie} from "../hooks/useCookie.js";
 
 export const weatherSlice = createSlice({
     name: 'weather',
     initialState: {
-        location: null,
+        location: parseCookie('lastSearch') ?? null,
         data: null,
     },
     reducers: {

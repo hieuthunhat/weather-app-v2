@@ -7,6 +7,23 @@ import store from './store/store.js'
 import {SettingProvider} from "./contexts/SettingContext.jsx";
 import Header from "./components/Header/Header.jsx";
 import {ThemeProvider} from "./contexts/ThemeContext.jsx";
+import {useContext} from "react";
+import {SettingContext} from "./contexts/SettingContext.jsx";
+
+function AppContent() {
+    const {onboardingDone} = useContext(SettingContext);
+
+    return (
+        <AppLayout>
+            {onboardingDone && (
+                <div className={'header-container'}>
+                    <Header/>
+                </div>
+            )}
+            <AppRoutes/>
+        </AppLayout>
+    )
+}
 
 function App() {
 
@@ -15,12 +32,7 @@ function App() {
             <SettingProvider>
                 <BrowserRouter>
                     <ThemeProvider>
-                        <AppLayout>
-                            <div className={'header-container'}>
-                                <Header/>
-                            </div>
-                            <AppRoutes/>
-                        </AppLayout>
+                        <AppContent/>
                     </ThemeProvider>
                 </BrowserRouter>
             </SettingProvider>

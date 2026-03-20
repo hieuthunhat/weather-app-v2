@@ -57,4 +57,15 @@ export const FORECAST_DAYS_OPTIONS = [
 export const MAX_RECENT_SEARCHES_SESSION = 5;
 
 export const HISTORICAL_URL = 'https://archive-api.open-meteo.com/v1/archive';
-export const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'
+export const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality';
+
+export const AIR_QUALITY_HOURLY_FIELDS = [
+    'european_aqi',
+    'us_aqi',
+    'pm2_5',
+    'pm10',
+    'ozone',
+    'nitrogen_dioxide',
+    'sulphur_dioxide',
+    'carbon_monoxide',
+];

@@ -10,6 +10,7 @@ import {buildForecastURL} from "../helpers/helpers.jsx";
 import {FORECAST_URL} from "../consts/settingConstants.js";
 import DailyWeatherCard from "../components/DailyWeatherCard/DailyWeatherCard.jsx";
 import ForecastHourlyCard from "../components/ForecastHourlyCard/ForecastHourlyCard.jsx";
+import Onboarding from "../components/Onboarding/Onboarding.jsx";
 
 /**
  *
@@ -18,15 +19,11 @@ import ForecastHourlyCard from "../components/ForecastHourlyCard/ForecastHourlyC
  */
 function Home() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields} = useContext(SettingContext);
+    const {selectedFields, onboardingDone, completeOnboarding, componentVisibility, unitSettings} = useContext(SettingContext);
+    const {home: homeVis} = componentVisibility;
 
     const {data: weatherData, loading, fetchApi} = useFetch({
-        url: buildForecastURL({
-            url: FORECAST_URL,
-            obj: selectedFields,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude
-        }),
+        url: null,
         initLoad: false
     })
 
@@ -34,27 +31,44 @@ function Home() {
         if (!selectedLocation) {
             return;
         }
-        fetchApi();
-    }, [selectedLocation])
+        const freshUrl = buildForecastURL({
+            url: FORECAST_URL,
+            obj: selectedFields,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            units: unitSettings
+        });
+        fetchApi(freshUrl);
+    }, [selectedLocation, unitSettings])
+
+    const handleOnboardingClose = () => {
+        completeOnboarding();
+    };
 
     return (
-        <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'} width={'100%'}
+        <Stack justifyContent={'center'} gap={2} padding={2} maxWidth={2000} alignItems={'center'}
+               width={'100%'}
                margin={'0 auto'}>
-            {selectedLocation ?
-                loading ? <HomePageSkeleton/> :
-                    <Grid container spacing={2} columns={16}>
-                        <Grid size={{xs: 16, md: 10}}>
-                            <Stack spacing={2}>
-                                <CurrentWeatherCard data={weatherData}/>
-                                <ForecastHourlyCard data={weatherData}/>
-                            </Stack>
-                        </Grid>
-                        <Grid size={{xs: 16, md: 'grow'}}>
-                            <DailyWeatherCard data={weatherData}/>
-                        </Grid>
-                    </Grid>
+            {!onboardingDone ?
+                <Onboarding onClose={handleOnboardingClose}/>
                 :
-                <EmptyState/>
+                selectedLocation ?
+                    loading ? <HomePageSkeleton/> :
+                        <Grid container spacing={2} columns={16}>
+                            <Grid size={{xs: 16, md: 10}}>
+                                <Stack spacing={2}>
+                                    <CurrentWeatherCard data={weatherData}/>
+                                    {homeVis.forecastHourlyCard && <ForecastHourlyCard data={weatherData}/>}
+                                </Stack>
+                            </Grid>
+                            {homeVis.dailyWeatherCard && (
+                                <Grid size={{xs: 16, md: 'grow'}}>
+                                    <DailyWeatherCard data={weatherData}/>
+                                </Grid>
+                            )}
+                        </Grid>
+                    :
+                    <EmptyState/>
             }
         </Stack>
     )
