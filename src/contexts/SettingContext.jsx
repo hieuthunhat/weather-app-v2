@@ -1,5 +1,6 @@
 import {createContext, useState} from "react";
 import {useCookie} from "../hooks/useCookie.js";
+import {useStorage} from "../hooks/useStorage.js";
 import {
     CLOUD_COVER,
     DOMINANT_WIND_DIRECTION,
@@ -30,6 +31,8 @@ import {
     WIND_SPEED_MAX
 } from "../consts/settingConstants.js";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useSession} from "../hooks/useSession.js";
 
 export const SettingContext = createContext();
 
@@ -48,12 +51,70 @@ export const SettingProvider = ({children}) => {
         hourly: [HOURLY_TEMPERATURE, HOURLY_RELATIVE_HUMIDITY, HOURLY_FEELS_LIKE_TEMPERATURE, HOURLY_WIND_SPEED, HOURLY_PRECIPITATION, HOURLY_RAIN, HOURLY_SHOWERS, HOURLY_SNOWFALL, HOURLY_WIND_DIRECTION, HOURLY_WIND_GUSTS, HOURLY_CLOUD_COVER, WEATHER_CODE]
     })
     const [hideElements, setHideElements] = useState([]);
+    const [unitSettings, setUnitSettings, deleteUnitSettings] = useStorage({
+        key: 'unitSettings',
+        initialValue: {
+            temperature_unit: 'celsius',
+            wind_speed_unit: 'kmh',
+            precipitation_unit: 'mm',
+        }
+    });
     const [lastSearch, setLastSearchCookie] = useCookie({key: 'lastSearch', initialValue: null, maxAgeDays: 1});
     const [onboardingSkipped, setOnboardingSkipped] = useState(false);
     const onboardingDone = onboardingSkipped || lastSearch !== null;
 
+    const defaultVisibility = {
+        home: {
+            forecastHourlyCard: true,
+            dailyWeatherCard: true,
+            map: true,
+            feelsLike: true,
+            windSpeed: true,
+            humidity: true,
+            cloudCover: true,
+            windDirection: true,
+            windGusts: true,
+        },
+        analytics: {
+            temperatureChart: true,
+            windChart: true,
+            precipitationChart: true,
+            humidityCloudChart: true,
+            aqiChart: true,
+            pollutantsChart: true,
+        }
+    };
+
+    const [componentVisibility, setComponentVisibility, deleteComponentVisibility] = useStorage({
+        key: 'componentVisibility',
+        initialValue: defaultVisibility
+    });
+
+    const toggleComponentVisibility = (page, component) => {
+        setComponentVisibility(prev => ({
+            ...prev,
+            [page]: {
+                ...prev[page],
+                [component]: !prev[page][component]
+            }
+        }));
+    };
+
     const completeOnboarding = () => {
         setOnboardingSkipped(true);
+    };
+
+    const {deleteSession} = useSession('recentSearches')
+    const [onboarding, setOnboarding, deleteOnboarding] = useStorage({key: 'onboarding'})
+
+    const resetOnboarding = () => {
+        setOnboardingSkipped(false);
+        setLastSearchCookie(null);
+        window.location.href = "/"
+        deleteSession();
+        deleteComponentVisibility();
+        deleteUnitSettings();
+        deleteOnboarding();
     };
 
     return <SettingContext.Provider value={{
@@ -71,8 +132,15 @@ export const SettingProvider = ({children}) => {
         setSelectedHistoricalFields,
         onboardingDone,
         completeOnboarding,
+        resetOnboarding,
         lastSearch,
-        setLastSearchCookie
+        setLastSearchCookie,
+        componentVisibility,
+        setComponentVisibility,
+        toggleComponentVisibility,
+        defaultVisibility,
+        unitSettings,
+        setUnitSettings
     }}>
         {children}
     </SettingContext.Provider>

@@ -1,7 +1,14 @@
 import moment from "moment-timezone";
 import {getWeatherIcon} from "../consts/iconMaps";
 
-export const buildForecastURL = ({url, obj, latitude, longitude}) => {
+function buildUnitParams(units = {}) {
+    return Object.entries(units)
+        .filter(([_, value]) => value && value !== 'celsius' && value !== 'kmh' && value !== 'mm')
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
+}
+
+export const buildForecastURL = ({url, obj, latitude, longitude, units}) => {
     if (latitude == null || longitude == null) {
         return null;
     }
@@ -11,9 +18,10 @@ export const buildForecastURL = ({url, obj, latitude, longitude}) => {
         .map(([key, value]) => `${key}=${value.join(",")}`)
         .join("&");
 
-    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime&forecast_days=16`;
+    const unitQuery = buildUnitParams(units);
+    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}${unitQuery ? '&' + unitQuery : ''}&timeformat=unixtime&forecast_days=16`;
 };
-export const buildHistoricalURL = ({url, obj, latitude, longitude, startDate, endDate}) => {
+export const buildHistoricalURL = ({url, obj, latitude, longitude, startDate, endDate, units}) => {
     if (latitude == null || longitude == null) {
         return null;
     }
@@ -23,7 +31,8 @@ export const buildHistoricalURL = ({url, obj, latitude, longitude, startDate, en
         .map(([key, value]) => `${key}=${value.join(",")}`)
         .join("&");
 
-    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}&timeformat=unixtime&start_date=${startDate}&end_date=${endDate}`;
+    const unitQuery = buildUnitParams(units);
+    return `${url}?latitude=${latitude}&longitude=${longitude}&${query}${unitQuery ? '&' + unitQuery : ''}&timeformat=unixtime&start_date=${startDate}&end_date=${endDate}`;
 };
 
 /**
@@ -93,3 +102,19 @@ function getIconClass(weatherCode) {
     if ([95, 96, 99].includes(weatherCode)) return "thunder";
     return "";
 }
+
+export const timeAxisConfig = (timeData, scaleType = "point") => ({
+    data: timeData,
+    scaleType,
+    valueFormatter: (v) => formatUnixWithTZ({ unix: v, format: 'h:mm A' }),
+    tickLabelInterval: (_value, index) => {
+        if (timeData.length <= 24) return index % 3 === 0;
+        return index % 24 === 0;
+    },
+});
+
+export const buildAirQualityURL = ({ latitude, longitude, hourlyFields }) => {
+    if (latitude == null || longitude == null) return null;
+    const fields = hourlyFields.join(',');
+    return `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=${fields}&timeformat=unixtime&past_days=7`;
+};

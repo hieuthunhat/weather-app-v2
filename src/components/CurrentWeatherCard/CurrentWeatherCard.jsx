@@ -13,7 +13,8 @@ import ThreeDotsButton from "../ThreeDotsButton/ThreeDotsButton.jsx";
  * @constructor
  */
 function CurrentWeatherCard({data}) {
-    const {location: selectedLocation} = useContext(SettingContext);
+    const {location: selectedLocation, componentVisibility} = useContext(SettingContext);
+    const vis = componentVisibility.home;
 
     const actionsList = [
         {
@@ -61,14 +62,16 @@ function CurrentWeatherCard({data}) {
 
                     {/* Elements */}
                     <Stack width={'100%'} gap={2} padding={1}>
-                        <iframe
-                            width="100%"
-                            height="250"
-                            style={{border: 0}}
-                            loading="lazy"
-                            allowFullScreen
-                            src={`https://www.google.com/maps?q=${selectedLocation?.latitude},${selectedLocation?.longitude}&z=15&output=embed`}
-                        />
+                        {vis.map && (
+                            <iframe
+                                width="100%"
+                                height="250"
+                                style={{border: 0}}
+                                loading="lazy"
+                                allowFullScreen
+                                src={`https://www.google.com/maps?q=${selectedLocation?.latitude},${selectedLocation?.longitude}&z=15&output=embed`}
+                            />
+                        )}
 
                         <Box
                             display="flex"
@@ -77,42 +80,54 @@ function CurrentWeatherCard({data}) {
                             gap={2}
                             padding={1}
                         >
-                            <UnitCard
-                                label="Feels like"
-                                dataNumber={data?.current?.apparent_temperature}
-                                unit={data?.current_units?.temperature_2m}
-                                unitKey="FEELS_LIKE_TEMPERATURE"
-                            />
-                            <UnitCard
-                                label="Wind speed"
-                                dataNumber={data?.current?.wind_speed_10m}
-                                unit={data?.current_units?.wind_speed_10m}
-                                unitKey="WIND_SPEED"
-                            />
-                            <UnitCard
-                                label="Humidity"
-                                dataNumber={data?.current?.relative_humidity_2m}
-                                unit={data?.current_units?.relative_humidity_2m}
-                                unitKey="RELATIVE_HUMIDITY"
-                            />
-                            <UnitCard
-                                label="Cloud cover"
-                                dataNumber={data?.current?.cloud_cover}
-                                unit={data?.current_units?.cloud_cover}
-                                unitKey="CLOUD_COVER"
-                            />
-                            <UnitCard
-                                label="Wind direction"
-                                dataNumber={data?.current?.wind_direction_10m}
-                                unit={data?.current_units?.wind_direction_10m}
-                                unitKey="WIND_DIRECTION"
-                            />
-                            <UnitCard
-                                label="Wind gusts"
-                                dataNumber={data?.current?.wind_gusts_10m}
-                                unit={data?.current_units?.wind_gusts_10m}
-                                unitKey="WIND_GUSTS"
-                            />
+                            {vis.feelsLike && (
+                                <UnitCard
+                                    label="Feels like"
+                                    dataNumber={data?.current?.apparent_temperature}
+                                    unit={data?.current_units?.temperature_2m}
+                                    unitKey="FEELS_LIKE_TEMPERATURE"
+                                />
+                            )}
+                            {vis.windSpeed && (
+                                <UnitCard
+                                    label="Wind speed"
+                                    dataNumber={data?.current?.wind_speed_10m}
+                                    unit={data?.current_units?.wind_speed_10m}
+                                    unitKey="WIND_SPEED"
+                                />
+                            )}
+                            {vis.humidity && (
+                                <UnitCard
+                                    label="Humidity"
+                                    dataNumber={data?.current?.relative_humidity_2m}
+                                    unit={data?.current_units?.relative_humidity_2m}
+                                    unitKey="RELATIVE_HUMIDITY"
+                                />
+                            )}
+                            {vis.cloudCover && (
+                                <UnitCard
+                                    label="Cloud cover"
+                                    dataNumber={data?.current?.cloud_cover}
+                                    unit={data?.current_units?.cloud_cover}
+                                    unitKey="CLOUD_COVER"
+                                />
+                            )}
+                            {vis.windDirection && (
+                                <UnitCard
+                                    label="Wind direction"
+                                    dataNumber={data?.current?.wind_direction_10m}
+                                    unit={data?.current_units?.wind_direction_10m}
+                                    unitKey="WIND_DIRECTION"
+                                />
+                            )}
+                            {vis.windGusts && (
+                                <UnitCard
+                                    label="Wind gusts"
+                                    dataNumber={data?.current?.wind_gusts_10m}
+                                    unit={data?.current_units?.wind_gusts_10m}
+                                    unitKey="WIND_GUSTS"
+                                />
+                            )}
                         </Box>
                     </Stack>
                 </Stack>
