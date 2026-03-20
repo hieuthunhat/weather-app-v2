@@ -19,15 +19,11 @@ import Onboarding from "../components/Onboarding/Onboarding.jsx";
  */
 function Home() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, onboardingDone, completeOnboarding} = useContext(SettingContext);
+    const {selectedFields, onboardingDone, completeOnboarding, componentVisibility, unitSettings} = useContext(SettingContext);
+    const {home: homeVis} = componentVisibility;
 
     const {data: weatherData, loading, fetchApi} = useFetch({
-        url: buildForecastURL({
-            url: FORECAST_URL,
-            obj: selectedFields,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude
-        }),
+        url: null,
         initLoad: false
     })
 
@@ -35,8 +31,15 @@ function Home() {
         if (!selectedLocation) {
             return;
         }
-        fetchApi();
-    }, [selectedLocation])
+        const freshUrl = buildForecastURL({
+            url: FORECAST_URL,
+            obj: selectedFields,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            units: unitSettings
+        });
+        fetchApi(freshUrl);
+    }, [selectedLocation, unitSettings])
 
     const handleOnboardingClose = () => {
         completeOnboarding();
@@ -55,12 +58,14 @@ function Home() {
                             <Grid size={{xs: 16, md: 10}}>
                                 <Stack spacing={2}>
                                     <CurrentWeatherCard data={weatherData}/>
-                                    <ForecastHourlyCard data={weatherData}/>
+                                    {homeVis.forecastHourlyCard && <ForecastHourlyCard data={weatherData}/>}
                                 </Stack>
                             </Grid>
-                            <Grid size={{xs: 16, md: 'grow'}}>
-                                <DailyWeatherCard data={weatherData}/>
-                            </Grid>
+                            {homeVis.dailyWeatherCard && (
+                                <Grid size={{xs: 16, md: 'grow'}}>
+                                    <DailyWeatherCard data={weatherData}/>
+                                </Grid>
+                            )}
                         </Grid>
                     :
                     <EmptyState/>

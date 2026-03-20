@@ -15,7 +15,13 @@ const timeAxisConfig = (timeData, scaleType = "point") => ({
 
 const chartHeight = 350;
 
-const HourlyWeatherCard = ({ data }) => {
+const HourlyWeatherCard = ({ data, visibility = {} }) => {
+    const {
+        temperatureChart = true,
+        windChart = true,
+        precipitationChart = true,
+        humidityCloudChart = true
+    } = visibility;
     const hourly = data?.hourly;
     const units = data?.hourly_units;
 
@@ -26,7 +32,7 @@ const HourlyWeatherCard = ({ data }) => {
     return (
         <Grid container spacing={3}>
             {/* Temperature */}
-            <Grid size={{ xs: 12, lg: 6 }}>
+            {temperatureChart && <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -51,10 +57,10 @@ const HourlyWeatherCard = ({ data }) => {
                         />
                     </Stack>
                 </Card>
-            </Grid>
+            </Grid>}
 
             {/* Wind */}
-            <Grid size={{ xs: 12, lg: 6 }}>
+            {windChart && <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -79,10 +85,10 @@ const HourlyWeatherCard = ({ data }) => {
                         />
                     </Stack>
                 </Card>
-            </Grid>
+            </Grid>}
 
             {/* Precipitation */}
-            <Grid size={{ xs: 12, lg: 6 }}>
+            {precipitationChart && <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -117,10 +123,10 @@ const HourlyWeatherCard = ({ data }) => {
                         />
                     </Stack>
                 </Card>
-            </Grid>
+            </Grid>}
 
             {/* Humidity & Cloud Cover */}
-            <Grid size={{ xs: 12, lg: 6 }}>
+            {humidityCloudChart && <Grid size={{ xs: 12, lg: 6 }}>
                 <Card>
                     <Stack padding={2}>
                         <Typography fontWeight="bold" fontSize={20}>
@@ -145,7 +151,7 @@ const HourlyWeatherCard = ({ data }) => {
                         />
                     </Stack>
                 </Card>
-            </Grid>
+            </Grid>}
         </Grid>
     );
 };

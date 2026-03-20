@@ -13,32 +13,20 @@ import MediaModal from "../components/MediaModal/MediaModal.jsx";
 
 function Analytics() {
     const selectedLocation = useSelector(state => state.weather.location);
-    const {selectedFields, selectedHistoricalFields} = useContext(SettingContext);
+    const {selectedFields, selectedHistoricalFields, componentVisibility, unitSettings} = useContext(SettingContext);
     const matches = useMediaQuery('(max-width:650px)');
 
     const {data: weatherData, loading, fetchApi} = useFetch({
-        url: buildForecastURL({
-            url: FORECAST_URL,
-            obj: selectedFields,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude
-        }),
+        url: null,
         initLoad: false
     });
 
     const today = moment().format('YYYY-MM-DD');
-
     const sevenDaysAgo = moment().subtract(7, 'days').format('YYYY-MM-DD');
 
     const {data: historicalData, loading: historicalLoading, fetchApi: fetchHistoricalApi} = useFetch({
-        url: buildHistoricalURL({
-            url: HISTORICAL_URL,
-            latitude: selectedLocation?.latitude,
-            longitude: selectedLocation?.longitude,
-            startDate: sevenDaysAgo,
-            endDate: today,
-            obj: selectedHistoricalFields,
-        })
+        url: null,
+        initLoad: false
     })
 
     const [selectedDate, setSelectedDate] = useState('');
@@ -47,9 +35,25 @@ function Analytics() {
         if (!selectedLocation) {
             return;
         }
-        fetchApi();
-        fetchHistoricalApi();
-    }, [selectedLocation])
+        const forecastUrl = buildForecastURL({
+            url: FORECAST_URL,
+            obj: selectedFields,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            units: unitSettings
+        });
+        const historicalUrl = buildHistoricalURL({
+            url: HISTORICAL_URL,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            startDate: sevenDaysAgo,
+            endDate: today,
+            obj: selectedHistoricalFields,
+            units: unitSettings,
+        });
+        fetchApi(forecastUrl);
+        fetchHistoricalApi(historicalUrl);
+    }, [selectedLocation, unitSettings])
 
     const mergedHourly = useMemo(() => {
         const historical = historicalData?.hourly;
@@ -160,9 +164,9 @@ function Analytics() {
                                 </FormControl>
                             </Box>
                             in
-                            <Typography variant={'span'} fontWeight={'bold'}>{selectedLocation?.name? `${selectedLocation.locationName}` : `${(selectedLocation.latitude).toFixed(3)}, ${selectedLocation.longitude.toFixed(3)}`}</Typography>
+                            <Typography variant={'span'} fontWeight={'bold'}>{selectedLocation?.name ? `${selectedLocation.name}, ${selectedLocation.locationName}` : `${selectedLocation.latitude?.toFixed(3)}, ${selectedLocation.longitude?.toFixed(3)}`}</Typography>
                         </Stack>
-                        <HourlyWeatherCard data={filteredData}/>
+                        <HourlyWeatherCard data={filteredData} visibility={componentVisibility.analytics}/>
                     </Box>
                 :
                 <EmptyState/>
