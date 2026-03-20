@@ -1,12 +1,21 @@
 import React from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, styled, Typography} from "@mui/material";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    styled,
+    Typography
+} from "@mui/material";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const WarningDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
     },
     '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
+        padding: theme.spacing(1.5),
     },
 }));
 
@@ -18,13 +27,16 @@ function MediaModal() {
     };
 
     return (
-        <BootstrapDialog
+        <WarningDialog
             onClose={handleClose}
-            aria-labelledby="customized-dialog-title"
+            aria-labelledby="warning-dialog-title"
             open={open}
         >
-            <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Modal title
+            <DialogTitle
+                sx={{m: 0, p: 2, display: 'flex', alignItems: 'center', gap: 1, color: 'warning.main'}}
+                id="warning-dialog-title"
+            >
+                Warning
             </DialogTitle>
             <IconButton
                 aria-label="close"
@@ -40,10 +52,15 @@ function MediaModal() {
             </IconButton>
             <DialogContent dividers>
                 <Typography gutterBottom>
-                    This feature is supposed to display on large screen to bring best experience
+                    This feature is supposed to display on large screen to bring best experience.
                 </Typography>
             </DialogContent>
-        </BootstrapDialog>
+            <DialogActions>
+                <Button onClick={handleClose} variant="contained" color="warning">
+                    Got it
+                </Button>
+            </DialogActions>
+        </WarningDialog>
     );
 }
 

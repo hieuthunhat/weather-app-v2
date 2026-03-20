@@ -39,6 +39,8 @@ const ANALYTICS_COMPONENTS = {
     windChart: 'Wind Chart',
     precipitationChart: 'Precipitation Chart',
     humidityCloudChart: 'Humidity & Cloud Cover Chart',
+    aqiChart: 'Air Quality Index Chart',
+    pollutantsChart: 'Pollutant Concentrations Chart',
 };
 
 function SectionTitle({children}) {

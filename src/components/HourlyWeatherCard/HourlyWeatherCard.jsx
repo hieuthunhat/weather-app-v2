@@ -1,17 +1,7 @@
-import { Card, Grid, Stack, Typography } from "@mui/material";
-import { LineChart } from "@mui/x-charts/LineChart";
-import { BarChart } from "@mui/x-charts/BarChart";
-import { formatUnixWithTZ } from "../../helpers/helpers.jsx";
-
-const timeAxisConfig = (timeData, scaleType = "point") => ({
-    data: timeData,
-    scaleType,
-    valueFormatter: (v) => formatUnixWithTZ({ unix: v, format: 'h:mm A' }),
-    tickLabelInterval: (_value, index) => {
-        if (timeData.length <= 24) return index % 3 === 0;
-        return index % 24 === 0;
-    },
-});
+import {Card, Grid, Stack, Typography} from "@mui/material";
+import {LineChart} from "@mui/x-charts/LineChart";
+import {BarChart} from "@mui/x-charts/BarChart";
+import {timeAxisConfig} from "../../helpers/helpers.jsx";
 
 const chartHeight = 350;
 

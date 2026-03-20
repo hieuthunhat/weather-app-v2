@@ -80,6 +80,8 @@ export const SettingProvider = ({children}) => {
             windChart: true,
             precipitationChart: true,
             humidityCloudChart: true,
+            aqiChart: true,
+            pollutantsChart: true,
         }
     };
 
