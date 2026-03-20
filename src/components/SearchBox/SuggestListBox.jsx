@@ -13,8 +13,8 @@ import {useSession} from "../../hooks/useSession.js";
 
 function SuggestListBox({suggestions = [], setSuggestions}) {
 
-    const {setSession, getSession} = useSession('recentSearches')
-    const {setLocation} = useContext(SettingContext);
+    const {setSession, getSession} = useSession('recentSearches');
+    const {setLocation, setLastSearchCookie} = useContext(SettingContext);
     const dispatch = useDispatch();
 
     const handleClickLocation = (value) => {
@@ -27,6 +27,7 @@ function SuggestListBox({suggestions = [], setSuggestions}) {
         }
         const newSearches = [value, ...oldSearches];
         setSession(newSearches);
+        setLastSearchCookie(value);
     };
 
     return (

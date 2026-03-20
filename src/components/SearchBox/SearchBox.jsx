@@ -7,6 +7,7 @@ import {useFetch} from "../../hooks/useFetch.js";
 import {useDispatch} from "react-redux";
 import {setLocationData} from "../../counters/counterSlice.js";
 import {useGeolocation} from "../../hooks/useGeolocation.jsx";
+import {useCookie} from "../../hooks/useCookie.js";
 
 const SearchBox = () => {
     const [query, setQuery] = useState('');
@@ -47,6 +48,8 @@ const SearchBox = () => {
             longitude: data.coords.longitude
         }))
     })
+
+    const {} = useCookie({key: 'recentSearches'})
 
     return (
         <Stack display={'flex'} flexDirection={'row'} width={{xs: '80%', md: '40%'}} sx={{position: 'relative'}}
